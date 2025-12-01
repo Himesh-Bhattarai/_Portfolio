@@ -17,16 +17,16 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
           <div className="relative">
             <div className="relative h-[450px] w-full rounded-lg overflow-hidden shadow-xl">
-              <img src="/about-setion-pic.png?height=1000&width=600" alt="Profile" className="object-cover" />
+              <img src="public\WhatsApp Image 2025-12-01 at 7.49.26 PM (1).jpeg?height=1200&width=600" alt="Profile" className="object-cover" />
               {/* Smoke Effect Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+              {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div> */}
 
               {/* Animated Smoke */}
-              <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+              {/* <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
                 <div className="smoke-1"></div>
                 <div className="smoke-2"></div>
                 <div className="smoke-3"></div>
-              </div>
+              </div> */}
             </div>
           </div>
 
