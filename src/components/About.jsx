@@ -9,8 +9,9 @@ export default function About() {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-zinc-900 dark:text-white">About Me</h2>
           <p className="text-zinc-600 dark:text-gray-400 max-w-2xl mx-auto">
-            I'm a passionate FRONTEND, BACKEND, FULLSTACK DAEVELOPER and DESIGNER with expertise in creating immersive digital experiences. My work
-            combines technical precision with creative vision.
+            I’m Himesh Bhattarai, a Kathmandu-based developer focused on sharp, high-performance web experiences.
+            I like opinionated layouts, accessible interactions, and codebases that are easy to extend.
+            When I’m not polishing UIs, I’m wiring up auth, CI/CD, or small DevOps experiments.
           </p>
         </div>
 
@@ -35,10 +36,12 @@ export default function About() {
               Creative Developer
             </h3>
             <p className="text-zinc-600 dark:text-zinc-300 mb-6">
-              I'm Himesh Bhattarai, a passionate app and web developer from Prakashpur, Sunsari, Nepal. From a young age, I was fascinated by technology, and this curiosity drove me to explore the world of coding and software development. My journey began with simple HTML pages, but soon, I was diving into complex web applications and mobile app development.
+              I build sharp, fast web experiences with React, Next.js, and Node. I balance brutalist visual language with clean
+              architecture and production-minded details, from authentication to deployment pipelines.
             </p>
             <p className="text-zinc-600 dark:text-zinc-300 mb-6">
-              My goal is to create intuitive, efficient, and user-friendly applications that solve real-world problems. I'm particularly interested in front-end development and have been sharpening my skills in React, JavaScript, and other modern web technologies. I aspire to work on projects that challenge me and allow me to grow as a developer.
+              I’m comfortable owning work from design handoff to deployment. Current interests: TypeScript everywhere, lean CI/CD,
+              and keeping interfaces honest and legible.
             </p>
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
@@ -55,7 +58,7 @@ export default function About() {
               </div>
               <div>
                 <h4 className="font-medium text-zinc-900 dark:text-white mb-2">Availability:</h4>
-                <p className="text-zinc-600 dark:text-zinc-400">WEBSITE || APP DEVELOPER</p>
+                <p className="text-zinc-600 dark:text-zinc-400">Open for freelance/contract</p>
               </div>
             </div>
             <div className="flex gap-4">
@@ -111,4 +114,3 @@ export default function About() {
     </section>
   )
 }
-

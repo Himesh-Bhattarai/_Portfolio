@@ -7,13 +7,13 @@ export default function Resume() {
   const skills = [
     {
       category: "Technical Skills",
-      items: ["React JS", "HTML", "CSS", "Javascript", "Node JS", "MongoBD", "Express", "Typescript", "Next JS", "Tailwind CSS", "git & github"],
+      items: ["React JS", "Next JS", "JavaScript", "TypeScript", "Node JS", "MongoDB", "Express", "Tailwind CSS", "Framer Motion", "Git & GitHub"],
       icon: Code,
       color: "bg-gradient-to-r from-blue-500 to-cyan-400"
     },
     {
       category: "Soft Skills",
-      items: ["Good Communication", "Critical Thinking", "Analytical Skills", "Ability to work under pressure"],
+      items: ["Communication", "Critical Thinking", "Analytical Skills", "Remote Collaboration"],
       icon: Zap,
       color: "bg-gradient-to-r from-indigo-500 to-purple-600"
     },
@@ -27,11 +27,11 @@ export default function Resume() {
 
   const education = [
     {
-      degree: "Bachelor of Computer Applications (BCA)--Tamplat",
-      institution: "Xavier International College-- Random",
-      period: "Present",
+      degree: "Bachelor of Computer Applications (BCA)",
+      institution: "Xavier International College",
+      period: "Ongoing",
       description: "Currently pursuing degree in Computer Applications",
-      gpa: " "
+      gpa: ""
     },
     {
       degree: "+2, Computer Management",
@@ -53,19 +53,19 @@ export default function Resume() {
     {
       name: "Front End Development Libraries",
       issuer: "freeCodeCamp",
-      year: "Recent",
+      year: "2025",
       icon: Star
     },
     {
       name: "CS50 Introduction to Python Programming Language",
       issuer: "Harvard University CS50",
-      year: "Recent",
+      year: "2025",
       icon: Award
     },
     {
       name: "CS50 Introduction to Computer Science",
       issuer: "Harvard University",
-      year: "Recent",
+      year: "2024",
       icon: Award
     }
   ]

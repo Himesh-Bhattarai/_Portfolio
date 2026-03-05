@@ -1,56 +1,51 @@
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Briefcase, Calendar, MapPin, CheckCircle2, Award, Users, Zap } from "lucide-react"
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Briefcase, Calendar, MapPin, CheckCircle2, Award, Users, Zap } from "lucide-react";
 
 export default function Experience() {
   const experiences = [
     {
-      period: "2024 – Present",
-      title: "Full-Stack Developer (Self-Driven Projects)",
+      period: "2024 — Present",
+      title: "Full-Stack Developer (Self-Directed / Open Source)",
       company: "Personal & Open-Source Projects",
       location: "Lalitpur, Nepal",
       description:
         "Building full-stack applications and tools while learning advanced backend and DevOps concepts.",
       achievements: [
-        "Created the Freakend CLI tool that auto-generates production-ready backend structure",
-        "Implemented JWT-based authentication including login, refresh token, switch account, and multi-device logout",
-        "Developed multiple frontend projects using React and Next.js with clean UI design",
-        "Explored Docker, GitHub Actions, and CI/CD automation for backend deployment",
+        "Built CLI that scaffolds backends with JWT auth and refresh.",
+        "Shipped multiple React/Next frontends with clean UI systems.",
+        "Experimented with Docker + GitHub Actions for CI/CD.",
       ],
-      skills: ["Node.js", "Express", "MongoDB", "React", "Next.js", "JavaScript", "Python", "DevOps Basics"],
+      skills: ["Node.js", "Express", "MongoDB", "React", "Next.js", "CI/CD"],
       icon: Zap,
       color: "from-blue-500 to-cyan-400",
     },
-
     {
-      period: "2023 – 2024",
+      period: "2023 — 2024",
       title: "Frontend Developer (Freelance / Practice Projects)",
       company: "Self-Employed",
       location: "Kathmandu, Nepal",
       description:
         "Built responsive and interactive web interfaces and improved frontend development skills.",
       achievements: [
-        "Developed portfolio websites, landing pages, and UI components",
-        "Created reusable component structures with clean architecture",
-        "Implemented form validations, authentication UI, and API integrations",
-        "Improved UI/UX with animations and modern design patterns",
+        "Delivered responsive landing pages and component libraries.",
+        "Implemented validation/auth flows and API integrations.",
+        "Improved UX with motion and accessibility tweaks.",
       ],
-      skills: ["React", "JavaScript", "CSS", "Tailwind", "HTML"],
+      skills: ["React", "JavaScript", "Tailwind", "UI Systems"],
       icon: Award,
       color: "from-purple-500 to-indigo-500",
     },
-
     {
-      period: "2022 – 2023",
+      period: "2022 — 2023",
       title: "Technical Intern / Learner",
       company: "Learning Phase",
       location: "Nepal",
       description:
         "Studied programming fundamentals and built small applications to strengthen logic and problem-solving.",
       achievements: [
-        "Completed C, Python, and basic data structures projects",
-        "Built small apps like todo app, notes app, and basic CRUD APIs",
-        "Learned Git, GitHub, version control basics",
+        "Completed C/Python mini-projects and DS exercises.",
+        "Built CRUD/to-do tools; learned Git/GitHub workflows.",
       ],
       skills: ["C", "Python", "Git", "Problem Solving"],
       icon: Users,
@@ -58,15 +53,13 @@ export default function Experience() {
     },
   ];
 
-
   return (
     <section id="experience" className="py-20 px-4 bg-white dark:bg-zinc-950">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-zinc-900 dark:text-white">Experience</h2>
           <p className="text-zinc-600 dark:text-gray-400 max-w-2xl mx-auto">
-            My journey through the Basic language like HTML, CSS , JS & crafting immersive experiences and pushing technological
-            boundaries
+            Roles that shaped my craft—shipping interfaces, tightening auth flows, and iterating on deployment.
           </p>
         </div>
 
@@ -74,7 +67,6 @@ export default function Experience() {
           {experiences.map((exp, index) => (
             <div key={index} className="relative">
               <div className="flex flex-col md:flex-row gap-8">
-                {/* Left side with icon and line */}
                 <div className="hidden md:flex flex-col items-center">
                   <div
                     className={`w-16 h-16 rounded-full bg-gradient-to-br ${exp.color} flex items-center justify-center shadow-lg`}
@@ -86,7 +78,6 @@ export default function Experience() {
                   )}
                 </div>
 
-                {/* Right side with content */}
                 <div className="flex-1">
                   <Card className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
                     <div className={`h-2 ${exp.color} w-full absolute top-0 left-0 right-0 z-10`}></div>
@@ -149,6 +140,5 @@ export default function Experience() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

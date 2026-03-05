@@ -5,7 +5,7 @@ import * as THREE from 'three';
 
 
 
-export default function Home() {
+export default function Home({ data }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [showLightning, setShowLightning] = useState(true);
@@ -81,8 +81,16 @@ export default function Home() {
     };
   }, []);
 
-  const titleText = "HIMESHCHANCHAL BHATTARAI";
+  const titleText = data?.title || "I build sharp, fast web experiences";
+  const subtitle = data?.subtitle || "Brutalist-inspired interfaces, clean architecture, production-minded details.";
   const titleChars = titleText.split("");
+  const socials = data?.socials || [
+    { label: "Facebook", url: "https://facebook.com", icon: Facebook },
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/your-handle", icon: Linkedin },
+    { label: "GitHub", url: "https://github.com/your-handle", icon: Github },
+    { label: "Twitter", url: "https://twitter.com/your-handle", icon: Instagram },
+    { label: "Phone", url: "tel:+977000000000", icon: Phone },
+  ];
 
   return (
     <>
@@ -123,16 +131,12 @@ export default function Home() {
           </h1>
         )}
 
-        <p className="text-xl md:text-2xl text-gray-400 mb-8 animate-fade-in">FRONTEND || BACKEND || FULLSTACK || SOFTWARE DEVELOPER</p>
+        <p className="text-xl md:text-2xl text-gray-400 mb-8 animate-fade-in">
+          {subtitle}
+        </p>
 
         <div className="flex justify-center gap-4 animate-fade-in" style={{ animationDelay: "2.5s" }}>
-          {[
-            { icon: Facebook, url: "https://facebook.com" },
-            { icon: Linkedin, url: "https://linkedin.com" },
-            { icon: Github, url: "https://github.com" },
-            { icon: Instagram, url: "https://instagram.com" },
-            { icon: Phone, url: "https://wa.me/1234567890" }
-          ].map(({ icon: Icon, url }, i) => (
+          {socials.map(({ icon: Icon, url, label }, i) => (
             <a
               key={i}
               href={url}
@@ -141,7 +145,7 @@ export default function Home() {
               className=" hover:bg-zinc-700 p-3 rounded-full transition-colors"
             >
               <Icon className="h-6 w-6" />
-              <span className="sr-only">{Icon.name}</span>
+              <span className="sr-only">{label || Icon.name}</span>
             </a>
           ))}
         </div>

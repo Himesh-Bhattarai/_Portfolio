@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Mail, MapPin, Phone } from "lucide-react"
 
-export default function Contact() {
+export default function Contact({ data }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -40,16 +40,16 @@ export default function Contact() {
           <div>
             <h3 className="text-2xl font-bold mb-6 text-zinc-900 dark:text-white">Contact Information</h3>
 
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="bg-white dark:bg-zinc-900 p-3 rounded-full shadow-sm">
-                  <Mail className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-medium text-zinc-900 dark:text-white">Email</h4>
-                  <p className="text-zinc-600 dark:text-gray-400">code.himesh@gmail.com</p>
-                </div>
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="bg-white dark:bg-zinc-900 p-3 rounded-full shadow-sm">
+                <Mail className="h-6 w-6 text-primary" />
               </div>
+              <div>
+                <h4 className="text-lg font-medium text-zinc-900 dark:text-white">Email</h4>
+                  <p className="text-zinc-600 dark:text-gray-400">{data?.email || "you@example.com"}</p>
+              </div>
+            </div>
 
               <div className="flex items-start gap-4">
                 <div className="bg-white dark:bg-zinc-900 p-3 rounded-full shadow-sm">
@@ -57,7 +57,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="text-lg font-medium text-zinc-900 dark:text-white">Phone</h4>
-                  <p className="text-zinc-600 dark:text-gray-400">+(977) 9806352021 || 9763487920</p>
+                  <p className="text-zinc-600 dark:text-gray-400">{data?.phone || "tel:+977000000000"}</p>
                 </div>
               </div>
 
@@ -67,7 +67,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="text-lg font-medium text-zinc-900 dark:text-white">Location</h4>
-                  <p className="text-zinc-600 dark:text-gray-400">Kathmandu, NP</p>
+                  <p className="text-zinc-600 dark:text-gray-400">{data?.location || "Kathmandu, Nepal"}</p>
                 </div>
               </div>
             </div>
@@ -119,4 +119,3 @@ export default function Contact() {
     </section>
   )
 }
-

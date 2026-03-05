@@ -1,8 +1,11 @@
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
 @import "@radix-ui/colors/slate.css";
 @import "@radix-ui/colors/slate-dark.css";
-@import "@radix-ui/colors/violet.css";
-@import "@radix-ui/colors/violet-dark.css";
-
 
 @tailwind base;
 @tailwind components;
@@ -10,410 +13,102 @@
 
 @layer base {
   :root {
-    /* HSL Color Variables */
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
+    /* Light theme */
+    --page-bg: #f7f8fb;
+    --page-fg: #0b0b0f;
+    --muted: #4a4a55;
+    --accent: #2df3a3;
+    --accent-2: #2f57ff;
+    --panel: #ffffff;
+    --card: #fbfbfd;
+    --chip-bg: rgba(0, 0, 0, 0.04);
+    --line: rgba(0, 0, 0, 0.08);
 
-    /* Gradient colors */
-    --blue-500: #3b82f6;
-    --cyan-400: #22d3ee;
-    --indigo-500: #6366f1;
-    --purple-500: #a855f7;
-    --green-500: #22c55e;
-    --amber-500: #f59e0b;
-    --orange-500: #f97316;
-
-    /* Chart colors */
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-
-    /* Sidebar colors */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-border: 220 13% 91%;
+    /* Shadcn variables */
+    --background: 220 33% 97%;
+    --foreground: 234 10% 10%;
+    --card-foreground: 234 10% 12%;
+    --primary: 160 88% 44%;
+    --primary-foreground: 0 0% 6%;
+    --secondary: 230 20% 94%;
+    --secondary-foreground: 234 10% 14%;
+    --muted-foreground: 234 10% 36%;
+    --accent-foreground: 0 0% 8%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 234 12% 85%;
+    --input: 234 12% 85%;
+    --ring: 160 88% 44%;
+    --radius: 0.65rem;
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --page-bg: #0b0b0f;
+    --page-fg: #f6f6f6;
+    --muted: #a3a3b0;
+    --accent: #2df3a3;
+    --accent-2: #7da6ff;
+    --panel: #0f0f16;
+    --card: #11111b;
+    --chip-bg: rgba(255, 255, 255, 0.04);
+    --line: rgba(255, 255, 255, 0.12);
+
+    --background: 0 0% 5%;
+    --foreground: 0 0% 96%;
+    --card-foreground: 0 0% 96%;
+    --primary: 160 88% 56%;
+    --primary-foreground: 0 0% 5%;
+    --secondary: 240 6% 18%;
+    --secondary-foreground: 0 0% 96%;
+    --muted-foreground: 240 5% 70%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-  }
-
-  /* Base element styles */
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    font-family: Arial, Helvetica, sans-serif;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 160 88% 56%;
+    --radius: 0.65rem;
   }
 
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
   }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+    color: var(--page-fg);
+    background: var(--page-bg);
+    font-feature-settings: "liga" 1, "calt" 1, "tnum" 1;
+  }
+
+  .font-mono {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
 }
 
 @layer components {
-
-  /* Card hover effects */
-  .card-hover {
-    @apply transition-all duration-300 ease-in-out;
-
-    &:hover {
-      @apply -translate-y-2 shadow-lg;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
+  .hero-grid {
+    background-image: linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.35;
   }
 
-  /* Magneto-like font styling */
-  .magneto-font {
-    @apply font-bold italic uppercase tracking-wider;
-    font-family: fantasy;
-  }
-
-  /* Text animations */
-  .text-animation {
-    @apply inline-block opacity-0;
-    animation: slideIn 1.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-
-  .text-animation-complete {
-    animation: pulse 2s infinite;
-  }
-
-  .fade-in-animation {
-    @apply opacity-0;
-    animation: fadeIn 1s forwards;
-    animation-delay: var(--delay, 2s);
+  .grid-background {
+    background-image: linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-  }
-
-  /* Alternating sections in light mode */
-  .light section:nth-child(odd) {
-    @apply bg-white;
-  }
-
-  .light section:nth-child(even) {
-    @apply bg-zinc-100;
-  }
-}
-
-/* 3D section styles */
-canvas {
-  @apply block;
-}
-
-/* Smoke animation for profile image */
-.smoke-1,
-.smoke-2,
-.smoke-3 {
-  @apply absolute w-12 h-12 rounded-full;
-  background-color: rgba(255, 255, 255, 0.1);
-  bottom: 30%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.smoke-1 {
-  animation: smoke-1 4s infinite ease-out;
-}
-
-.smoke-2 {
-  animation: smoke-2 6s infinite ease-out 1s;
-}
-
-.smoke-3 {
-  animation: smoke-3 5s infinite ease-out 2s;
-}
-
-/* Lightning effect styles */
-.lightning-overlay {
-  @apply pointer-events-none;
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.lightning-bolt {
-  @apply absolute top-0 h-full w-0.5 opacity-0 z-10;
-  left: 50%;
-  background: linear-gradient(to bottom, transparent 0%, #ffffff 20%, #ffffff 40%, #ffffff 60%, transparent 100%);
-  transform: translateX(-50%) rotate(5deg);
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
-  animation: lightning 0.5s ease-out;
-
-  &::before,
-  &::after {
-    @apply absolute top-[40%] h-0.5 bg-white;
-    content: "";
-    width: 15px;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
-  }
-
-  &::before {
-    @apply left-0;
-    transform: rotate(-45deg);
-  }
-
-  &::after {
-    @apply right-0;
-    transform: rotate(45deg);
-  }
-
-  &.delay-200 {
-    left: 30%;
-    animation-delay: 0.2s;
-    transform: translateX(-50%) rotate(-15deg);
-  }
-
-  &.delay-400 {
-    left: 70%;
-    animation-delay: 0.4s;
-    transform: translateX(-50%) rotate(20deg);
-  }
-
-  &.delay-600 {
-    left: 20%;
-    animation-delay: 0.6s;
-    transform: translateX(-50%) rotate(-5deg);
-  }
-
-  &.delay-800 {
-    left: 80%;
-    animation-delay: 0.8s;
-    transform: translateX(-50%) rotate(10deg);
-  }
-}
-
-.lightning-flash {
-  @apply absolute inset-0 opacity-0 z-[5];
-  background-color: rgba(255, 255, 255, 0.4);
-  animation: flash 1.5s ease-out;
-}
-
-.thunder-sound {
-  @apply absolute opacity-0;
-  animation: thunder 1.5s ease-out 0.3s;
-}
-
-/* Animation keyframes */
-@keyframes smoke-1 {
-  0% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 0.3;
-  }
-
-  100% {
-    transform: translateY(-80px) translateX(20px) scale(2);
-    opacity: 0;
-  }
-}
-
-@keyframes smoke-2 {
-  0% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 0.2;
-  }
-
-  100% {
-    transform: translateY(-100px) translateX(-30px) scale(1.5);
-    opacity: 0;
-  }
-}
-
-@keyframes smoke-3 {
-  0% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 0.4;
-  }
-
-  100% {
-    transform: translateY(-120px) translateX(10px) scale(2.5);
-    opacity: 0;
-  }
-}
-
-@keyframes lightning {
-  0% {
-    opacity: 0;
-  }
-
-  5% {
-    opacity: 1;
-  }
-
-  10% {
-    opacity: 0;
-  }
-
-  15% {
-    opacity: 1;
-  }
-
-  20% {
-    opacity: 0;
-  }
-
-  25% {
-    opacity: 0.5;
-  }
-
-  30% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes flash {
-  0% {
-    opacity: 0;
-  }
-
-  5% {
-    opacity: 0.9;
-  }
-
-  10% {
-    opacity: 0.2;
-  }
-
-  15% {
-    opacity: 0.7;
-  }
-
-  20% {
-    opacity: 0.1;
-  }
-
-  25% {
-    opacity: 0.5;
-  }
-
-  30% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes thunder {
-  0% {
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes slideIn {
-  0% {
-    opacity: 0;
-    transform: translateX(var(--start-position, -100vw));
-  }
-
-  60% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes pulse {
-  0% {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-  }
-
-  50% {
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  }
-
-  100% {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
   }
 }

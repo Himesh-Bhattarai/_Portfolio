@@ -5,29 +5,36 @@ import { ExternalLink } from "lucide-react"
 export default function Portfolio() {
   const projects = [
     {
-      title: "First Portfolio Website",
-      description: "Portfolio website to show my skill.",
-      image: "/first-portfolio.png?height=600&width=800",
-      tags: ["Tailwind CSS", "React"],
-      link: "https://portfolio-hcb.vercel.app"
+      title: "NP Revolution",
+      description: "Independent Nepali news platform with real-time updates and simplified summaries.",
+      image: "/nprevolution.png?height=800&width=600",
+      tags: ["Next.js", "TypeScript", "Tailwind", "Node"],
+      link: "https://nprevolution.example.com",
+      code: "https://github.com/your-handle/nprevolution"
     },
     {
-      title: "Helmet Head Nepal ",
-      description: "E-commerce Website about helmet & motorcycle accesories.",
+      title: "Helmet Head Nepal",
+      description: "E-commerce experience for helmets and moto accessories.",
       image: "/fav-con.png?height=600&width=800",
-      tags: ["Three.js", "Next.js", "React.JS", "Express", "Node.JS", "Tailwind CSS"],
+      tags: ["Next.js", "Three.js", "Express", "Tailwind"],
+      link: "https://helmethead.example.com",
+      code: "https://github.com/your-handle/helmet-head"
     },
     {
       title: "HerbalWisdom",
-      description: "Detailed Description of Herbal. Like User, purpos, sideeffect, advantages etc",
+      description: "Herbal knowledge base with uses, cautions, and search.",
       image: "/portfolio.png?height=800&width=600",
-      tags: [ "Next.js", "React.JS", "Tailwind CSS", "Typescript"],
+      tags: ["Next.js", "TypeScript", "Tailwind"],
+      link: "https://herbalwisdom.example.com",
+      code: "https://github.com/your-handle/herbalwisdom"
     },
     {
-      title: "NP REVOLUTION",
-      description: "NP REVOLUTION is an independent Nepali news platform exposing corruption, delivering honest journalism, and empowering citizens with real-time updates and simplified news summaries.",
-      image: "/nprevolution.png?height=800&width=600",
-      tags: ["Next.JS" , "React.JS" ,"TailwindCss" , "EXpress", "Node JS", "TypeScript"],
+      title: "Portfolio v1",
+      description: "First shipped portfolio to showcase skills and projects.",
+      image: "/first-portfolio.png?height=600&width=800",
+      tags: ["React", "Tailwind"],
+      link: "https://portfolio-hcb.vercel.app",
+      code: "https://github.com/your-handle/portfolio-v1"
     },
   ]
 
@@ -63,11 +70,22 @@ export default function Portfolio() {
                     </span>
                   ))}
                 </div>
-                <a href={project.link} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" size="sm" className="gap-2">
-                    View Project <ExternalLink className="h-4 w-4" />
-                  </Button>
-                </a>
+                <div className="flex gap-2">
+                  {project.link && (
+                    <a href={project.link} target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" size="sm" className="gap-2">
+                        Live <ExternalLink className="h-4 w-4" />
+                      </Button>
+                    </a>
+                  )}
+                  {project.code && (
+                    <a href={project.code} target="_blank" rel="noopener noreferrer">
+                      <Button variant="ghost" size="sm" className="gap-2">
+                        Code <ExternalLink className="h-4 w-4" />
+                      </Button>
+                    </a>
+                  )}
+                </div>
               </CardContent>
             </Card>
           ))}
@@ -76,4 +94,3 @@ export default function Portfolio() {
     </section>
   )
 }
-

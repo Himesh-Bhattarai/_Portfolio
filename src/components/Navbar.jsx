@@ -1,117 +1,82 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useTheme } from '@/components/Theme-provider';
 
-export default function Navbar() {
+const scrollTo = (id, close) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const y = el.getBoundingClientRect().top + window.pageYOffset - 72;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+  if (close) close(false);
+};
+
+export default function Navbar({ data }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState("dark"); // Local theme state
-
-  // Toggle between light/dark theme
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-    localStorage.setItem("theme", newTheme);
-  };
+  const { theme, toggleTheme } = useTheme();
+  const links = data?.links || ["Home", "Work", "Experience", "About", "Resume", "Contact"];
+  const brandImage = data?.brandImage || "/loog-hcb.png";
+  const brandName = data?.brandName || "Himesh Bhattarai";
 
   useEffect(() => {
-    // Initialize theme from localStorage or prefer-color-scheme
-    const savedTheme = localStorage.getItem("theme") ||
-      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    setTheme(savedTheme);
-    document.documentElement.classList.toggle("dark", savedTheme === "dark");
-
-    // Scroll handler
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const toggleMenu = () => setIsOpen(!isOpen);
-
-  const scrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      const yOffset = -80;
-      const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-      setIsOpen(false);
-    }
-  };
-
-  const navLinks = [
-    { href: "home", label: "Home" },
-    { href: "about", label: "About" },
-    { href: "portfolio", label: "Portfolio" },
-    { href: "experience", label: "Experience" },
-    { href: "resume", label: "Resume" },
-    { href: "contact", label: "Contact" },
-  ];
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-black/80 backdrop-blur-md py-3" : "bg-transparent py-5"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-[rgba(11,11,15,0.9)] backdrop-blur border-b border-[--line]' : 'bg-transparent'
+      }`}
     >
-      <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
-        <Link to="/home" className="flex items-center">
-          <span className="inline-block">
-            <img
-              src="/loog-hcb.png"
-              alt="HCB Logo"
-              className="h-8 w-auto inline-block"
-            />
-          </span>
-        </Link>
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <button
+          onClick={() => scrollTo('hero')}
+          className="flex items-center gap-2 text-sm font-semibold tracking-tight"
+        >
+          <img src={brandImage} alt="HCB logo" className="h-8 w-auto" />
+          <span className="hidden sm:inline text-[--muted]">{brandName}</span>
+        </button>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-1">
-          {navLinks.map((link) => (
+        <nav className="hidden md:flex items-center gap-1">
+          {links.map((label) => (
             <button
-              key={link.href}
-              onClick={() => scrollToSection(link.href)}
-              className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors cursor-pointer"
+              key={label}
+              onClick={() => scrollTo(label.toLowerCase())}
+              className="px-3 py-2 text-sm font-medium text-[--muted] hover:text-[--page-fg] transition-colors"
             >
-              {link.label}
+              {label}
             </button>
           ))}
-
           <Button variant="ghost" size="icon" onClick={toggleTheme} className="ml-2">
-            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             <span className="sr-only">Toggle theme</span>
           </Button>
         </nav>
 
-        {/* Mobile Navigation Toggle */}
-        <div className="flex items-center md:hidden space-x-2">
-          <Button variant="ghost" size="icon" onClick={toggleTheme}>
-            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            <span className="sr-only">Toggle theme</span>
+        <div className="flex items-center md:hidden">
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="mr-1">
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
-
-          <Button variant="ghost" size="icon" onClick={toggleMenu}>
+          <Button variant="ghost" size="icon" onClick={() => setIsOpen((s) => !s)}>
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             <span className="sr-only">Toggle menu</span>
           </Button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-zinc-900">
+        <div className="md:hidden border-t border-[--line] bg-[--panel]">
           <div className="px-4 py-3 space-y-1">
-            {navLinks.map((link) => (
+            {links.map((label) => (
               <button
-                key={link.href}
-                onClick={() => scrollToSection(link.href)}
-                className="block w-full text-left px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-zinc-800 rounded-md"
+                key={label}
+                onClick={() => scrollTo(label.toLowerCase(), setIsOpen)}
+                className="block w-full text-left px-3 py-2 text-base font-medium text-[--muted] hover:text-[--page-fg] rounded-md"
               >
-                {link.label}
+                {label}
               </button>
             ))}
           </div>
