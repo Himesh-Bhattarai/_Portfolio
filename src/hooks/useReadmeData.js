@@ -7,7 +7,7 @@ const CACHE_TTL = Number(import.meta.env.VITE_README_CACHE_SECONDS ?? 300) * 100
 const README_URL = import.meta.env.VITE_README_URL;
 const FALLBACK_URL = "/fallback-readme.md";
 
-const cache = { content: null, parsed: null, fetchedAt: 0 };
+const cache = { content: null, parsed: null, fetchedAt: 0, fallback: false };
 
 const isFresh = () => cache.content && Date.now() - cache.fetchedAt < CACHE_TTL;
 
@@ -15,11 +15,13 @@ export function useReadmeData() {
   const [data, setData] = useState(defaultContent);
   const [status, setStatus] = useState(cache.parsed ? "ready" : "loading");
   const [error, setError] = useState(null);
+  const [isFallback, setIsFallback] = useState(false);
   const abortRef = useRef();
 
   const load = async ({ force = false } = {}) => {
     if (!force && isFresh()) {
-      setData(mergeContent(cache.parsed));
+      setData(normalizeContent(cache.parsed, cache.fallback));
+      setIsFallback(cache.fallback);
       setStatus("ready");
       return;
     }
@@ -44,7 +46,9 @@ export function useReadmeData() {
       cache.content = text;
       cache.parsed = parsed;
       cache.fetchedAt = Date.now();
-      setData(mergeContent(parsed));
+      cache.fallback = false;
+      setData(normalizeContent(parsed, false));
+      setIsFallback(false);
       setStatus("ready");
     } catch (err) {
       console.warn("README fetch failed, trying fallback", err);
@@ -54,7 +58,9 @@ export function useReadmeData() {
         cache.content = fallback;
         cache.parsed = parsed;
         cache.fetchedAt = Date.now();
-        setData(mergeContent(parsed));
+        cache.fallback = true;
+        setData(normalizeContent(parsed, true));
+        setIsFallback(true);
         setStatus("ready");
         setError(err.message);
       } catch (fallbackErr) {
@@ -72,30 +78,30 @@ export function useReadmeData() {
 
   const refresh = () => load({ force: true });
 
-  return { data, status, error, refresh };
+  return { data, status, error, refresh, isFallback };
 }
 
-function mergeContent(parsed) {
-  // shallow merge parsed onto defaults
+function normalizeContent(parsed, allowDefaults) {
+  const dc = defaultContent;
+  const emptyLinks = [];
   return {
-    ...defaultContent,
-    ...parsed,
-    navbar: { ...defaultContent.navbar, ...parsed.navbar },
-    hero: { ...defaultContent.hero, ...parsed.hero },
-    about: { ...defaultContent.about, ...parsed.about },
-    projects: parsed.projects?.length ? parsed.projects : defaultContent.projects,
-    experience: parsed.experience?.length ? parsed.experience : defaultContent.experience,
+    navbar: parsed.navbar
+      ? { ...parsed.navbar, links: parsed.navbar.links || [] }
+      : allowDefaults
+        ? dc.navbar
+        : { brandImage: "", brandName: "", links: emptyLinks },
+    hero: allowDefaults ? { ...dc.hero, ...parsed.hero } : parsed.hero || {},
+    about: allowDefaults ? { ...dc.about, ...parsed.about } : parsed.about || {},
+    projects: parsed.projects?.length ? parsed.projects : allowDefaults ? dc.projects : [],
+    experience: parsed.experience?.length ? parsed.experience : allowDefaults ? dc.experience : [],
     resume: {
-      ...defaultContent.resume,
-      skills: parsed.skills?.groups
-        ? parsed.skills.groups.map((g, i) => ({ category: g.category ?? `Group ${i + 1}`, items: g.items }))
-        : defaultContent.resume.skills,
-      languages: parsed.skills?.languages ?? defaultContent.resume.languages,
-      education: parsed.education?.length ? parsed.education : defaultContent.resume.education,
-      certifications: parsed.certifications?.length ? parsed.certifications : defaultContent.resume.certifications,
+      skills: parsed.skills?.groups?.length ? parsed.skills.groups.map((g, i) => ({ category: g.category ?? `Group ${i + 1}`, items: g.items })) : allowDefaults ? dc.resume.skills : [],
+      languages: parsed.skills?.languages?.length ? parsed.skills.languages : allowDefaults ? dc.resume.languages : [],
+      education: parsed.education?.length ? parsed.education : allowDefaults ? dc.resume.education : [],
+      certifications: parsed.certifications?.length ? parsed.certifications : allowDefaults ? dc.resume.certifications : [],
     },
-    contact: { ...defaultContent.contact, ...parsed.contact },
-    footer: { ...defaultContent.footer, ...parsed.footer },
-    assets: { ...defaultContent.assets, ...parsed.assets },
+    contact: allowDefaults ? { ...dc.contact, ...parsed.contact } : parsed.contact || {},
+    footer: allowDefaults ? { ...dc.footer, ...parsed.footer } : parsed.footer || {},
+    assets: allowDefaults ? { ...dc.assets, ...parsed.assets } : parsed.assets || {},
   };
 }

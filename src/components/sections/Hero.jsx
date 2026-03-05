@@ -1,7 +1,6 @@
 import { ArrowDown, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { contactLinks as defaultContact } from '@/data/links';
-import { stats as defaultStats } from '@/data/stats';
 
 const scrollTo = (id) => {
   const el = document.getElementById(id);
@@ -12,7 +11,7 @@ const scrollTo = (id) => {
 
 export default function Hero({ data }) {
   const contactLinks = { ...defaultContact, ...(data?.contact || {}) };
-  const stats = data?.stats || defaultStats;
+  const stats = data?.stats || [];
   const socialLinks = data?.socials || [];
   const title = data?.title || "I build sharp, fast web experiences with React, Next.js, and Node.";
   const subtitle = data?.subtitle || "Brutalist-inspired interfaces, clean architecture, and production-minded details— from auth to CI/CD.";
@@ -55,17 +54,19 @@ export default function Hero({ data }) {
             </Button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="min-w-[130px] rounded-lg border border-[--line] px-4 py-3 bg-[--panel]"
-              >
-                <div className="text-2xl font-semibold">{stat.value}</div>
-                <div className="text-xs uppercase tracking-wide text-[--muted]">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+          {stats.length > 0 && (
+            <div className="flex flex-wrap items-center gap-4">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="min-w-[130px] rounded-lg border border-[--line] px-4 py-3 bg-[--panel]"
+                >
+                  <div className="text-2xl font-semibold">{stat.value}</div>
+                  <div className="text-xs uppercase tracking-wide text-[--muted]">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="flex flex-wrap items-center gap-4">
           {(socialLinks.length ? socialLinks : []).map((social) => (

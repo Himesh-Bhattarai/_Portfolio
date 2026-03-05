@@ -1,7 +1,7 @@
 import { stats as defaultStats } from '@/data/stats';
 
 export default function About({ data }) {
-  const stats = data?.stats || defaultStats;
+  const stats = data?.stats || [];
   const paragraphs = data?.paragraphs || [];
   return (
     <section id="about" className="px-6 py-20 border-b border-[--line] bg-[--panel] text-[--page-fg]">
@@ -16,14 +16,16 @@ export default function About({ data }) {
               {p}
             </p>
           ))}
-          <div className="grid grid-cols-2 gap-4">
-            {stats.map((stat) => (
-              <div key={stat.label} className="rounded-xl border border-[--line] bg-[--card] px-4 py-3">
-                <div className="text-2xl font-semibold">{stat.value}</div>
-                <div className="text-xs uppercase tracking-wide text-[--muted]">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+          {stats.length > 0 && (
+            <div className="grid grid-cols-2 gap-4">
+              {stats.map((stat) => (
+                <div key={stat.label} className="rounded-xl border border-[--line] bg-[--card] px-4 py-3">
+                  <div className="text-2xl font-semibold">{stat.value}</div>
+                  <div className="text-xs uppercase tracking-wide text-[--muted]">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="relative">

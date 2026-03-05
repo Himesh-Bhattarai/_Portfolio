@@ -1,5 +1,5 @@
 // Lightweight README parser tailored to the repo's README structure.
-// Falls back gracefully: missing sections simply return undefined.
+// Missing sections simply return undefined.
 
 const headingRegex = /^##\s+(.*)$/i;
 
@@ -22,9 +22,8 @@ export function parseReadme(markdown) {
 
 function splitSections(md) {
   const lines = md.split(/\r?\n/);
-  const map = {};
+  const map = { root: [] };
   let current = "root";
-  map[current] = [];
   lines.forEach((line) => {
     const m = headingRegex.exec(line.trim());
     if (m) {
@@ -55,9 +54,23 @@ function parseKeyValues(lines) {
 
 function parseNavbar(lines = []) {
   const kv = parseKeyValues(lines);
-  const links = parseList(lines.filter((l) => l.startsWith("  -") || l.startsWith("- "))).filter(
-    (l) => !l.toLowerCase().startsWith("brand")
-  );
+  const links = [];
+  let inLinks = false;
+  lines.forEach((l) => {
+    const trimmed = l.trim();
+    if (trimmed.toLowerCase().startsWith("- links")) {
+      inLinks = true;
+      return;
+    }
+    const isIndentedLink = l.startsWith("  -") || l.startsWith("\t-");
+    if (inLinks && isIndentedLink) {
+      const val = trimmed.replace(/^-+\s*/, "").trim();
+      if (val) links.push(val.replace(/\.$/, ""));
+      return;
+    }
+    const isNewTopItem = trimmed.startsWith("-") && !isIndentedLink;
+    if (inLinks && isNewTopItem) inLinks = false;
+  });
   return {
     brandImage: kv["Brand image"] || "/loog-hcb.png",
     brandName: kv["Brand name"] || "Himesh Bhattarai",
@@ -126,19 +139,28 @@ function parseExperience(lines = []) {
   const blocks = [];
   let current = null;
   lines.forEach((l) => {
-    const m = l.match(/^-+\s*\*\*(.+?)\*\*\s*—\s*(.+?)\s*—\s*(.+)$/);
+    const m = l.match(/^-+\s*\*\*(.+?)\*\*(.*)$/);
     if (m) {
       if (current) blocks.push(current);
-      current = { title: m[1], period: m[2], location: m[3], achievements: [], skills: [] };
+      const rest = m[2]
+        .replace(/\*\*/g, "")
+        .replace(/Â·/g, "—")
+        .trim();
+      const parts = rest.split(/[-–—]+/).map((p) => p.trim()).filter(Boolean);
+      const period = parts[0];
+      const location = parts[1];
+      current = { title: m[1].trim(), period, location, achievements: [], skills: [] };
       return;
     }
     if (!current) return;
-    const descMatch = l.match(/^\s*-+\s*(Built|Completed|Delivered|Experimented|Skills:)\s*(.*)$/i);
-    if (descMatch) {
-      const label = descMatch[1].toLowerCase();
-      const val = descMatch[2].trim();
-      if (label === "skills:") current.skills = val.split(",").map((s) => s.trim());
-      else current.achievements.push(`${descMatch[1]} ${val}`.replace(/Skills:\s*/i, "").trim());
+    const bullet = l.match(/^\s*-+\s*(.+)$/);
+    if (!bullet) return;
+    const text = bullet[1].trim();
+    const skillsMatch = text.match(/^Skills:\s*(.+)$/i);
+    if (skillsMatch) {
+      current.skills = skillsMatch[1].split(",").map((s) => s.trim());
+    } else if (text.length) {
+      current.achievements.push(text);
     }
   });
   if (current) blocks.push(current);
@@ -146,14 +168,10 @@ function parseExperience(lines = []) {
 }
 
 function parseSkills(lines = [], languageLines = []) {
-  const kv = parseKeyValues(languageLines);
   const groups = [];
-  // simple list split by dash items with colon
   const items = parseList(lines);
-  if (items.length) {
-    groups.push({ category: "Skills", items });
-  }
-  const languages = parseList(languageLines).map((l) => ({ name: l.replace(/^-\s*/, ""), proficiency: "" }));
+  if (items.length) groups.push({ category: "Skills", items });
+  const languages = parseList(languageLines).map((l) => ({ name: l.replace(/^-+\s*/, ""), proficiency: "" }));
   return { groups: groups.length ? groups : undefined, languages: languages.length ? languages : undefined };
 }
 
@@ -178,13 +196,27 @@ function parseContact(lines = []) {
 function parseFooter(lines = []) {
   const kv = parseKeyValues(lines);
   const quickLinks = [];
+  const socials = [];
   lines.forEach((l) => {
-    if (l.toLowerCase().includes("quick links")) return;
-    if (l.trim().startsWith("-")) quickLinks.push(l.replace(/^-+\s*/, "").trim());
+    const t = l.trim();
+    if (t.toLowerCase().startsWith("- quick links")) {
+      const list = t.split(":")[1] || "";
+      list.split(",").forEach((item) => {
+        const v = item.trim().replace(/\.$/, "");
+        if (v) quickLinks.push(v);
+      });
+    } else if (t.toLowerCase().startsWith("- social links")) {
+      const list = t.split(":")[1] || "";
+      list.split(",").forEach((item) => {
+        const v = item.trim().replace(/\.$/, "");
+        if (v) socials.push(v);
+      });
+    }
   });
   return {
     tagline: kv["Tagline"],
     quickLinks: quickLinks.length ? quickLinks : undefined,
+    socialLinks: socials.length ? socials : undefined,
     copyright: kv["Copyright"],
   };
 }
