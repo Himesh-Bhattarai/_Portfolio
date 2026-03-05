@@ -6,19 +6,33 @@ const MAX_SIZE = 200 * 1024;
 const CACHE_TTL = Number(import.meta.env.VITE_README_CACHE_SECONDS ?? 300) * 1000;
 const README_URL = import.meta.env.VITE_README_URL;
 const FALLBACK_URL = "/fallback-readme.md";
+const DISABLE_SYNC =
+  String(import.meta.env.VITE_DISABLE_README_SYNC || "").toLowerCase() === "true" ||
+  String(import.meta.env.VITE_DISABLE_README_SYNC || "") === "1";
 
 const cache = { content: null, parsed: null, fetchedAt: 0, fallback: false };
 
 const isFresh = () => cache.content && Date.now() - cache.fetchedAt < CACHE_TTL;
 
 export function useReadmeData() {
-  const [data, setData] = useState(defaultContent);
-  const [status, setStatus] = useState(cache.parsed ? "ready" : "loading");
+  const [data, setData] = useState(DISABLE_SYNC ? defaultContent : defaultContent);
+  const [status, setStatus] = useState(DISABLE_SYNC ? "ready" : cache.parsed ? "ready" : "loading");
   const [error, setError] = useState(null);
   const [isFallback, setIsFallback] = useState(false);
   const abortRef = useRef();
 
   const load = async ({ force = false } = {}) => {
+    if (DISABLE_SYNC) {
+      cache.parsed = defaultContent;
+      cache.content = "";
+      cache.fetchedAt = Date.now();
+      cache.fallback = false;
+      setData(defaultContent);
+      setStatus("ready");
+      setIsFallback(false);
+      setError(null);
+      return;
+    }
     if (!force && isFresh()) {
       setData(normalizeContent(cache.parsed, cache.fallback));
       setIsFallback(cache.fallback);
