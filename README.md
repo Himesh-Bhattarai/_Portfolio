@@ -64,18 +64,18 @@
   - Built CLI that scaffolds backends with JWT auth and refresh.
   - Shipped multiple React/Next frontends with clean UI systems.
   - Experimented with Docker + GitHub Actions for CI/CD.
-  - Skills: Node.js, Express, MongoDB, React, Next.js, CI/CD.
+  - Skills: Node.js, Express, MongoDB, React, Next.js, CI/CD
 
 - **Frontend Developer (Freelance / Practice Projects) — 2023 — 2024 — Kathmandu, Nepal**
   - Delivered responsive landing pages and component libraries.
   - Implemented validation/auth flows and API integrations.
   - Improved UX with motion and accessibility tweaks.
-  - Skills: React, JavaScript, Tailwind, UI Systems.
+  - Skills: React, JavaScript, Tailwind, UI Systems
 
 - **Technical Intern / Learner — 2022 — 2023 — Nepal**
   - Completed C/Python mini-projects and DS exercises.
   - Built CRUD/to-do tools; learned Git/GitHub workflows.
-  - Skills: C, Python, Git, Problem Solving.
+  - Skills: C, Python, Git, Problem Solving
 
 ## About
 - Headline: Designer-minded developer with a shipping habit.
