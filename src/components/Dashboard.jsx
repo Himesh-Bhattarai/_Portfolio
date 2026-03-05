@@ -34,7 +34,11 @@ export default function Dashboard({ content, status, error, onRefresh, isFallbac
         <Resume data={content.resume} />
         <Contact data={content.contact} />
       </main>
-      <Footer data={content.footer} navLinks={links} socialLinks={content.footer?.socialLinks || content.navbar?.socials} />
+      <Footer
+        data={{ ...content.footer, logo: content.assets?.logo, brandImage: content.navbar?.brandImage, brandName: content.navbar?.brandName }}
+        navLinks={links}
+        socialLinks={content.footer?.socialLinks || content.navbar?.socials}
+      />
     </>
   );
 }

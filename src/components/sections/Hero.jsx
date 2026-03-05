@@ -1,4 +1,4 @@
-import { ArrowDown, Download } from 'lucide-react';
+﻿import { ArrowDown, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { contactLinks as defaultContact } from '@/data/links';
 
@@ -14,7 +14,9 @@ export default function Hero({ data }) {
   const stats = data?.stats || [];
   const socialLinks = data?.socials || [];
   const title = data?.title || "I build sharp, fast web experiences with React, Next.js, and Node.";
-  const subtitle = data?.subtitle || "Brutalist-inspired interfaces, clean architecture, and production-minded details— from auth to CI/CD.";
+  const subtitle = data?.subtitle || "Brutalist-inspired interfaces, clean architecture, and production-minded details—from auth to CI/CD.";
+  const location = data?.location || contactLinks.location;
+  const availability = data?.availability || "Available for projects";
   return (
     <section
       id="hero"
@@ -26,9 +28,9 @@ export default function Hero({ data }) {
           <div className="inline-flex items-center gap-2 bg-[--chip-bg] text-[--muted] px-3 py-1 rounded-full font-mono text-xs border border-[--line]">
             <span>Full-stack engineer</span>
             <span className="h-1 w-1 rounded-full bg-[--accent]" />
-            <span>{contactLinks.location}</span>
+            <span>{location}</span>
             <span className="h-1 w-1 rounded-full bg-[--accent]" />
-            <span>Available for projects</span>
+            <span>{availability}</span>
           </div>
 
           <div className="space-y-6">
@@ -95,7 +97,7 @@ export default function Hero({ data }) {
                 </div>
               </div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-lg bg-black/40 px-3 py-2 backdrop-blur border border-[--line]">
-                <div className="text-sm font-semibold">Kathmandu • Remote</div>
+                <div className="text-sm font-semibold">{location || "Kathmandu • Remote"}</div>
                 <div className="text-xs text-[--muted] font-mono">Design / Build / Ship</div>
               </div>
             </div>

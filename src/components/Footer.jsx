@@ -1,17 +1,20 @@
-import { socialLinks as defaultSocial, navLinks as defaultNav } from '@/data/links';
+﻿import { socialLinks as defaultSocial, navLinks as defaultNav } from '@/data/links';
 
 export default function Footer({ data, navLinks, socialLinks }) {
-  const links = navLinks?.length ? navLinks : defaultNav.map((l) => l.label);
-  const socials = socialLinks || defaultSocial;
+  const links = navLinks?.length ? navLinks : (data?.quickLinks || defaultNav.map((l) => l.label));
+  const socials = data?.socialLinks?.map((label) => ({ label, url: '#' })) || socialLinks || defaultSocial;
+  const brandImage = data?.logo || data?.brandImage || '/loog-hcb.png';
+  const brandName = data?.brandName || 'Himesh Bhattarai';
+  const tagline = data?.tagline || 'Sharp, fast web experiences. Based in Kathmandu, shipping globally.';
   return (
     <footer className="border-t border-[--line] bg-[--page-bg] text-[--muted]">
       <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-[--page-fg] font-semibold">
-            <img src="/loog-hcb.png" alt="HCB logo" className="h-7 w-auto" />
-            <span>Himesh Bhattarai</span>
+            <img src={brandImage} alt="HCB logo" className="h-7 w-auto" />
+            <span>{brandName}</span>
           </div>
-          <p className="text-sm text-[--muted]">Sharp, fast web experiences. Based in Kathmandu, shipping globally.</p>
+          <p className="text-sm text-[--muted]">{tagline}</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-4">
@@ -35,7 +38,7 @@ export default function Footer({ data, navLinks, socialLinks }) {
           {socials.map((social) => (
             <a
               key={social.label}
-              href={social.url}
+              href={social.url || '#'}
               target="_blank"
               rel="noreferrer"
               className="text-sm hover:text-[--page-fg] transition-colors"

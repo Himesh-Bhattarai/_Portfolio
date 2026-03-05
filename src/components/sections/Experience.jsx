@@ -1,4 +1,4 @@
-import { Badge } from '@/components/ui/badge';
+﻿import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 export default function Experience({ data }) {
   const experiences = data && Array.isArray(data) ? data : [];
@@ -19,37 +19,45 @@ export default function Experience({ data }) {
           <div className="absolute left-4 top-4 bottom-4 w-[2px] bg-[--line] hidden md:block" aria-hidden />
           <div className="space-y-8">
           {experiences.map((exp) => (
-            <div key={exp.title} className="relative md:pl-12">
+            <div key={`${exp.title}-${exp.period}`} className="relative md:pl-12">
                 <div className="hidden md:block absolute left-3 top-6 h-3 w-3 rounded-full bg-[--accent] shadow-[0_0_0_6px_rgba(45,243,163,0.15)]" />
                 <Card className="border-[--line] bg-[--card]">
                   <CardHeader className="pb-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
                         <h3 className="text-xl font-semibold">{exp.title}</h3>
-                        <p className="text-[--muted]">{exp.company} · {exp.location}</p>
+                        {(exp.company || exp.location) && (
+                          <p className="text-[--muted]">{[exp.company, exp.location].filter(Boolean).join(' · ')}</p>
+                        )}
                       </div>
-                      <Badge variant="outline" className="border-[--line] text-[--muted]">
-                        {exp.period}
-                      </Badge>
+                      {exp.period && (
+                        <Badge variant="outline" className="border-[--line] text-[--muted]">
+                          {exp.period}
+                        </Badge>
+                      )}
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <p className="text-[--muted]">{exp.summary}</p>
-                    <ul className="space-y-2 list-disc list-inside text-sm text-[--muted]">
-                      {exp.achievements.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                    <div className="flex flex-wrap gap-2">
-                      {exp.skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="rounded-full border border-[--line] bg-[--chip-bg] px-3 py-1 text-xs font-mono text-[--muted]"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
+                    {exp.summary && <p className="text-[--muted]">{exp.summary}</p>}
+                    {exp.achievements?.length > 0 && (
+                      <ul className="space-y-2 list-disc list-inside text-sm text-[--muted]">
+                        {exp.achievements.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {exp.skills?.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {exp.skills.map((skill) => (
+                          <span
+                            key={skill}
+                            className="rounded-full border border-[--line] bg-[--chip-bg] px-3 py-1 text-xs font-mono text-[--muted]"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>

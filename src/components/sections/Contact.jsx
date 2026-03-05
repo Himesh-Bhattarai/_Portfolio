@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { contactLinks } from '@/data/links';
 import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
+import { contactLinks as defaults } from '@/data/links';
 
-export default function Contact() {
+export default function Contact({ data }) {
+  const contact = { ...defaults, ...(data || {}) };
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
 
@@ -34,18 +35,24 @@ export default function Contact() {
           </p>
 
           <div className="space-y-3 text-sm text-[--muted]">
-            <div className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-[--accent]" />
-              <a href={`mailto:${contactLinks.email}`} className="hover:text-[--page-fg]">{contactLinks.email}</a>
-            </div>
-            <div className="flex items-center gap-2">
-              <Phone className="h-4 w-4 text-[--accent]" />
-              <a href={`tel:${contactLinks.phone}`} className="hover:text-[--page-fg]">{contactLinks.phone}</a>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-[--accent]" />
-              <span>{contactLinks.location}</span>
-            </div>
+            {contact.email && (
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-[--accent]" />
+                <a href={`mailto:${contact.email}`} className="hover:text-[--page-fg]">{contact.email}</a>
+              </div>
+            )}
+            {contact.phone && (
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-[--accent]" />
+                <a href={`tel:${contact.phone}`} className="hover:text-[--page-fg]">{contact.phone}</a>
+              </div>
+            )}
+            {contact.location && (
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-[--accent]" />
+                <span>{contact.location}</span>
+              </div>
+            )}
           </div>
         </div>
 

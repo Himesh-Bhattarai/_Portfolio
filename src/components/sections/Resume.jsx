@@ -1,12 +1,12 @@
-import { Badge } from '@/components/ui/badge';
+﻿import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { skillGroups as defaultSkills, education as defaultEdu, certifications as defaultCerts } from '@/data/skills';
 
 export default function Resume({ data }) {
-  const skillGroups = data?.skills || defaultSkills;
-  const education = data?.education || defaultEdu;
-  const certifications = data?.certifications || defaultCerts;
-  const languages = data?.languages || [
+  const skillGroups = data?.skills?.length ? data.skills : defaultSkills;
+  const education = data?.education?.length ? data.education : defaultEdu;
+  const certifications = data?.certifications?.length ? data.certifications : defaultCerts;
+  const languages = data?.languages?.length ? data.languages : [
     { name: "Nepali", proficiency: "Native" },
     { name: "English", proficiency: "Fluent" },
     { name: "Hindi", proficiency: "Fluent" }
@@ -30,11 +30,11 @@ export default function Resume({ data }) {
               <CardTitle>Skills</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {skillGroups.map((group) => (
-                <div key={group.label} className="space-y-2">
-                  <div className="text-sm font-semibold">{group.label}</div>
+              {skillGroups.map((group, idx) => (
+                <div key={group.label || group.category || idx} className="space-y-2">
+                  <div className="text-sm font-semibold">{group.label || group.category}</div>
                   <div className="flex flex-wrap gap-2">
-                    {group.items.map((item) => (
+                    {(group.items || []).map((item) => (
                       <span
                         key={item}
                         className="rounded-full border border-[--line] bg-[--chip-bg] px-3 py-1 text-xs font-mono text-[--muted]"
@@ -54,11 +54,11 @@ export default function Resume({ data }) {
                 <CardTitle>Education</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {education.map((edu) => (
-                  <div key={edu.degree} className="border border-transparent border-b-[--line] last:border-b-0 pb-3 last:pb-0">
-                    <div className="text-base font-semibold">{edu.degree}</div>
-                    <div className="text-sm text-[--muted]">{edu.institution}</div>
-                    <div className="text-xs font-mono text-[--muted]">{edu.period}</div>
+                {education.map((edu, idx) => (
+                  <div key={edu.degree || idx} className="border border-transparent border-b-[--line] last:border-b-0 pb-3 last:pb-0">
+                    <div className="text-base font-semibold">{edu.degree || edu}</div>
+                    {edu.institution && <div className="text-sm text-[--muted]">{edu.institution}</div>}
+                    {edu.period && <div className="text-xs font-mono text-[--muted]">{edu.period}</div>}
                   </div>
                 ))}
               </CardContent>
@@ -69,16 +69,31 @@ export default function Resume({ data }) {
                 <CardTitle>Certifications</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {certifications.map((cert) => (
-                  <div key={cert.name} className="flex items-center justify-between border border-transparent border-b-[--line] last:border-b-0 pb-3 last:pb-0">
+                {certifications.map((cert, idx) => (
+                  <div key={cert.name || idx} className="flex items-center justify-between border border-transparent border-b-[--line] last:border-b-0 pb-3 last:pb-0">
                     <div>
-                      <div className="text-base font-semibold">{cert.name}</div>
-                      <div className="text-sm text-[--muted]">{cert.issuer}</div>
+                      <div className="text-base font-semibold">{cert.name || cert}</div>
+                      {cert.issuer && <div className="text-sm text-[--muted]">{cert.issuer}</div>}
                     </div>
-                    <Badge variant="outline" className="border-[--line] text-[--muted]">
-                      {cert.year}
-                    </Badge>
+                    {(cert.year || cert.period) && (
+                      <Badge variant="outline" className="border-[--line] text-[--muted]">
+                        {cert.year || cert.period}
+                      </Badge>
+                    )}
                   </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card className="border-[--line] bg-[--card]">
+              <CardHeader>
+                <CardTitle>Languages</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-wrap gap-2">
+                {languages.map((lang) => (
+                  <span key={lang.name} className="rounded-full border border-[--line] bg-[--chip-bg] px-3 py-1 text-xs font-mono text-[--muted]">
+                    {lang.name}{lang.proficiency ? ` (${lang.proficiency})` : ''}
+                  </span>
                 ))}
               </CardContent>
             </Card>

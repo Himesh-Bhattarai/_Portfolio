@@ -90,9 +90,9 @@ function normalizeContent(parsed, allowDefaults) {
       : allowDefaults
         ? dc.navbar
         : { brandImage: "", brandName: "", links: emptyLinks },
-    hero: allowDefaults ? { ...dc.hero, ...parsed.hero } : parsed.hero || {},
-    about: allowDefaults ? { ...dc.about, ...parsed.about } : parsed.about || {},
-    projects: parsed.projects?.length ? parsed.projects : allowDefaults ? dc.projects : [],
+    hero: allowDefaults ? { ...dc.hero, ...parsed.hero, stats: parsed.stats || dc.stats || [] } : { ...(parsed.hero || {}), stats: parsed.stats || [] },
+    about: allowDefaults ? { ...dc.about, ...parsed.about, stats: parsed.stats || dc.stats || [] } : { ...(parsed.about || {}), stats: parsed.stats || [] },
+    projects: mergeProjects(parsed.projects, dc.projects, allowDefaults, parsed.assets),
     experience: parsed.experience?.length ? parsed.experience : allowDefaults ? dc.experience : [],
     resume: {
       skills: parsed.skills?.groups?.length ? parsed.skills.groups.map((g, i) => ({ category: g.category ?? `Group ${i + 1}`, items: g.items })) : allowDefaults ? dc.resume.skills : [],
@@ -103,5 +103,25 @@ function normalizeContent(parsed, allowDefaults) {
     contact: allowDefaults ? { ...dc.contact, ...parsed.contact } : parsed.contact || {},
     footer: allowDefaults ? { ...dc.footer, ...parsed.footer } : parsed.footer || {},
     assets: allowDefaults ? { ...dc.assets, ...parsed.assets } : parsed.assets || {},
+    stats: parsed.stats || (allowDefaults ? dc.stats : []),
   };
+}
+
+function mergeProjects(parsed, defaults, allowDefaults, assets = {}) {
+  const assetImages = assets?.projectImages || [];
+  if (parsed?.length) {
+    return parsed.map((p, idx) => {
+      const fallback = defaults?.find((d) => d.title === p.title);
+      const assetImage = assetImages[idx];
+      return {
+        ...fallback,
+        ...p,
+        image: p.image || fallback?.image || assetImage,
+        tags: p.tags?.length ? p.tags : fallback?.tags,
+        link: p.link || p.live || fallback?.link,
+        code: p.code || fallback?.code,
+      };
+    });
+  }
+  return allowDefaults ? defaults : [];
 }

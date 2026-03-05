@@ -20,7 +20,9 @@ export default function Work({ data }) {
         </header>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {list.map((project) => (
+          {list.map((project) => {
+            const tags = project.tags || [];
+            return (
             <Card
               key={project.title}
               className="group border-[--line] bg-[--card] transition-transform duration-200 hover:-translate-y-1"
@@ -41,7 +43,7 @@ export default function Work({ data }) {
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
+                  {tags.map((tag) => (
                     <span
                       key={tag}
                       className="rounded-full border border-[--line] bg-[--chip-bg] px-3 py-1 text-xs font-mono text-[--muted]"
@@ -51,9 +53,9 @@ export default function Work({ data }) {
                   ))}
                 </div>
                 <div className="flex gap-2">
-                  {project.live && (
+                  {(project.link || project.live) && (
                     <Button variant="outline" size="sm" className="gap-2 border-[--line]" asChild>
-                      <a href={project.live} target="_blank" rel="noreferrer">
+                      <a href={project.link || project.live} target="_blank" rel="noreferrer">
                         Live <ExternalLink className="h-4 w-4" />
                       </a>
                     </Button>
@@ -68,7 +70,7 @@ export default function Work({ data }) {
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )})}
         </div>
       </div>
     </section>

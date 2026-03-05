@@ -1,4 +1,4 @@
-// README parser tailored for this portfolio.
+﻿// README parser tailored for this portfolio.
 // Missing sections simply return undefined; components hide missing parts.
 
 const headingRegex = /^##\s+(.*)$/i;
@@ -14,7 +14,7 @@ export function parseReadme(markdown) {
     about: parseAbout(sections["About"]),
     projects: parseProjects(sections["Projects"]),
     experience: parseExperience(sections["Experience"]),
-    skills: parseSkills(resumeSections.skills),
+    skills: parseSkills(resumeSections.skills, resumeSections.languages),
     education: parseEducation(resumeSections.education),
     certifications: parseCertifications(resumeSections.certifications),
     contact: parseContact(sections["Contact"]),
@@ -124,23 +124,35 @@ function parseStats(lines = []) {
 function parseAbout(lines = []) {
   const kv = parseKeyValues(lines);
   const paras = [];
+  let headline = kv["Headline"];
+  let inBio = false;
   lines.forEach((l) => {
     const t = l.trim();
     if (!t) return;
-    if (t.startsWith("-")) {
+    if (t.toLowerCase().startsWith("- headline")) {
       const m = t.match(/^-+\s*Headline:\s*(.*)$/i);
-      if (m) paras.push(m[1]);
-    } else {
-      paras.push(t);
+      if (m) headline = m[1];
+      return;
     }
+    if (t.toLowerCase().startsWith("- bio")) {
+      inBio = true;
+      return;
+    }
+    const isIndented = l.startsWith("  -") || l.startsWith("\t-");
+    if (inBio && isIndented) {
+      paras.push(t.replace(/^-+\s*/, ""));
+      return;
+    }
+    if (inBio && t.startsWith("-") && !isIndented) inBio = false;
   });
   return {
+    headline,
     paragraphs: paras.length ? paras : undefined,
     name: kv["Name"],
     email: kv["Email"],
     location: kv["Location"],
     availability: kv["Availability"],
-    portrait: stripTicks(kv["Portrait image"]),
+    portrait: stripTicks((kv["Portrait image"] || "").replace(/^public\\//i, "")),
   };
 }
 
@@ -155,7 +167,7 @@ function parseProjects(lines = []) {
       return;
     }
     if (!current) return;
-    const m = l.match(/-\s*(Description|Stack|Live|Code):\s*(.*)/i);
+    const m = l.match(/-\s*(Description|Stack|Live|Code|Image):\s*(.*)/i);
     if (m) {
       const key = m[1].toLowerCase();
       const val = m[2].trim();
@@ -163,6 +175,7 @@ function parseProjects(lines = []) {
       if (key === "stack") current.tags = val.split(",").map((s) => s.trim());
       if (key === "live") current.link = val;
       if (key === "code") current.code = val;
+      if (key === "image") current.image = stripTicks(val);
     }
   });
   if (current) blocks.push(current);
@@ -177,11 +190,14 @@ function parseExperience(lines = []) {
     if (m) {
       if (current) blocks.push(current);
       const titleRaw = m[1].trim();
-      const titleParts = titleRaw.split(/—/).map((p) => p.trim()).filter(Boolean);
-      const title = titleParts[0] || titleRaw;
-      const period = titleParts[1];
+      const titleParts = titleRaw.split(/[—–â€”]+/).map((p) => p.trim()).filter(Boolean);
+      const role = titleParts[0] || titleRaw;
+      const companyMatch = role.match(/\((.+)\)/);
+      const title = role.replace(/\s*\(.+\)\s*/, "").trim();
+      const company = companyMatch ? companyMatch[1] : undefined;
+      const period = [titleParts[1], titleParts[2]].filter(Boolean).join(" — ");
       const location = titleParts[3] || titleParts[2];
-      current = { title, period, location, achievements: [], skills: [] };
+      current = { title, company, period, location, achievements: [], skills: [] };
       return;
     }
     if (!current) return;
@@ -196,17 +212,45 @@ function parseExperience(lines = []) {
   return blocks.length ? blocks : undefined;
 }
 
-function parseSkills(lines = []) {
+function parseSkills(lines = [], languageLines = []) {
   const items = parseListLoose(lines);
-  return { groups: items.length ? [{ category: "Skills", items }] : undefined, languages: undefined };
+  const groups = items.length ? [{ category: "Skills", items }] : undefined;
+  const languages = parseLanguages(languageLines);
+  return { groups, languages };
 }
 
 function parseEducation(lines = []) {
-  return parseListLoose(lines);
+  const items = parseListLoose(lines);
+  return items.map((entry) => {
+    const parts = entry.split(/[—–â€”]+/).map((p) => p.trim());
+    return {
+      degree: parts[0] || entry,
+      institution: parts[1],
+      period: parts[2],
+      description: "",
+      gpa: "",
+    };
+  });
 }
 
 function parseCertifications(lines = []) {
-  return parseListLoose(lines);
+  const items = parseListLoose(lines);
+  return items.map((entry) => {
+    const parts = entry.split(/[—–â€”]+/).map((p) => p.trim());
+    return {
+      name: parts[0] || entry,
+      issuer: parts[1],
+      year: parts[2],
+    };
+  });
+}
+
+function parseLanguages(lines = []) {
+  const items = parseListLoose(lines);
+  return items.map((entry) => {
+    const parts = entry.split(/[()]/).map((p) => p.trim()).filter(Boolean);
+    return { name: parts[0] || entry, proficiency: parts[1] };
+  });
 }
 
 function parseContact(lines = []) {
@@ -252,7 +296,9 @@ function parseAssets(lines = []) {
   return {
     logo: stripTicks(kv["Logo"]),
     portrait: stripTicks(kv["Portrait"]),
-    projectImages: lines.filter((l) => l.includes(".png") || l.includes(".jpg")),
+    projectImages: lines
+      .map((l) => l.trim())
+      .filter((l) => l && (l.includes(".png") || l.includes(".jpg"))),
   };
 }
 
