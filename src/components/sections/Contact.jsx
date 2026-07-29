@@ -3,14 +3,23 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
-import { contactLinks as defaults } from '@/data/links';
 
-export default function Contact({ data }) {
-  const contact = { ...defaults, ...(data || {}) };
+export default function Contact() {
+ 
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
+  
+  
+    const contact = {
+    email: "himesh.hcb@gmail.com",
+    phone: "+977 9806352021",
+    location: "Kathmandu, Nepal",
+    
+  }
+  
 
   const handleChange = (e) => {
+
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -27,11 +36,11 @@ export default function Contact({ data }) {
       <div className="max-w-6xl mx-auto grid gap-10 md:grid-cols-[1.1fr_0.9fr] items-start">
         <div className="space-y-4">
           <p className="inline-flex w-fit items-center gap-2 rounded-full border border-[--line] bg-[--chip-bg] px-3 py-1 text-xs font-mono text-[--muted]">
-            Contact
+            Contact Info:)
           </p>
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">Let’s ship something together.</h2>
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">Have an idea or an opportunity? Let's talk.</h2>
           <p className="text-[--muted] max-w-xl">
-            Tell me about the problem, the users, and the timeline. I’ll respond within 24 hours.
+            Whether it's a full-time role, freelance project, or collaboration, I'd love to hear about it. I'll get back to you as soon as I can.
           </p>
 
           <div className="space-y-3 text-sm text-[--muted]">
@@ -60,7 +69,7 @@ export default function Contact({ data }) {
           <form className="space-y-4" onSubmit={handleSubmit}>
             <Input
               name="name"
-              placeholder="Your name"
+              placeholder="Full name"
               value={form.name}
               onChange={handleChange}
               required
@@ -69,7 +78,7 @@ export default function Contact({ data }) {
             <Input
               name="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="Email address"
               value={form.email}
               onChange={handleChange}
               required
@@ -77,7 +86,7 @@ export default function Contact({ data }) {
             />
             <Textarea
               name="message"
-              placeholder="Project goals, timeline, constraints..."
+              placeholder="Tell me about your project, opportunity, or question..."
               value={form.message}
               onChange={handleChange}
               required
@@ -85,7 +94,7 @@ export default function Contact({ data }) {
             />
             <div className="flex items-center justify-between">
               <Button type="submit" className="gap-2">
-                Send Message <ArrowRight className="h-4 w-4" />
+                Send Message  <ArrowRight className="h-4 w-4" />
               </Button>
               {sent && <span className="text-xs text-[--muted]">Message queued. I’ll reply shortly.</span>}
             </div>

@@ -1,8 +1,6 @@
-﻿import { socialLinks as defaultSocial, navLinks as defaultNav } from '@/data/links';
-
 export default function Footer({ data, navLinks, socialLinks }) {
-  const links = navLinks?.length ? navLinks : (data?.quickLinks || defaultNav.map((l) => l.label));
-  const socials = data?.socialLinks?.map((label) => ({ label, url: '#' })) || socialLinks || defaultSocial;
+  const links = navLinks?.length ? navLinks : (data?.quickLinks || []);
+  const socials = data?.socialLinks?.map((label) => ({ label, url: '#' })) || socialLinks || [];
   const brandImage = data?.logo || data?.brandImage || '/loog-hcb.png';
   const brandName = data?.brandName || 'Himesh Bhattarai';
   const tagline = data?.tagline || 'Sharp, fast web experiences. Based in Kathmandu, shipping globally.';

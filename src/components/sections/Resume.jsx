@@ -1,16 +1,11 @@
 ﻿import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { skillGroups as defaultSkills, education as defaultEdu, certifications as defaultCerts } from '@/data/skills';
 
 export default function Resume({ data }) {
-  const skillGroups = data?.skills?.length ? data.skills : defaultSkills;
-  const education = data?.education?.length ? data.education : defaultEdu;
-  const certifications = data?.certifications?.length ? data.certifications : defaultCerts;
-  const languages = data?.languages?.length ? data.languages : [
-    { name: "Nepali", proficiency: "Native" },
-    { name: "English", proficiency: "Fluent" },
-    { name: "Hindi", proficiency: "Fluent" }
-  ];
+  const skillGroups = data?.skills || [];
+  const education = data?.education || [];
+  const certifications = data?.certifications || [];
+  const languages = data?.languages || [];
   return (
     <section id="resume" className="px-6 py-20 border-b border-[--line] bg-[--page-bg] text-[--page-fg]">
       <div className="max-w-6xl mx-auto space-y-10">

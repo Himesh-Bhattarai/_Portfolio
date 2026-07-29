@@ -1,7 +1,11 @@
+import tailwindcssAnimate from "tailwindcss-animate";
+import typography from "@tailwindcss/typography";
+import forms from "@tailwindcss/forms";
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
   content: [
-    "./index.html",
+    "./app/**/*.{js,ts,jsx,tsx}",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   darkMode: "class",
@@ -101,8 +105,10 @@ module.exports = {
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/forms")
+    tailwindcssAnimate,
+    typography,
+    forms
   ],
-}
+};
+
+export default config;

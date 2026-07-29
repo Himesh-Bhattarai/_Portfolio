@@ -1,3 +1,5 @@
+'use client';
+
 // src/providers/ThemeProvider.jsx
 import { createContext, useContext, useEffect, useState } from 'react';
 

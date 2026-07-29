@@ -1,6 +1,5 @@
 ﻿import { ArrowDown, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { contactLinks as defaultContact } from '@/data/links';
 
 const scrollTo = (id) => {
   const el = document.getElementById(id);
@@ -10,12 +9,11 @@ const scrollTo = (id) => {
 };
 
 export default function Hero({ data }) {
-  const contactLinks = { ...defaultContact, ...(data?.contact || {}) };
   const stats = data?.stats || [];
   const socialLinks = data?.socials || [];
   const title = data?.title || "I build sharp, fast web experiences with React, Next.js, and Node.";
   const subtitle = data?.subtitle || "Brutalist-inspired interfaces, clean architecture, and production-minded details—from auth to CI/CD.";
-  const location = data?.location || contactLinks.location;
+  const location = data?.location || "Kathmandu, Nepal";
   const availability = data?.availability || "Available for projects";
   return (
     <section

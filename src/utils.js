@@ -1,4 +1,4 @@
-// src/lib/utils.js
+// src/utils.js
 export function cn(...inputs) {
   return inputs.filter(Boolean).join(' ');
 }
