@@ -1,5 +1,6 @@
 ﻿import { ArrowDown, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import SearchBar  from '@/components/SearchBar';
 
 const scrollTo = (id) => {
   const el = document.getElementById(id);
@@ -9,12 +10,67 @@ const scrollTo = (id) => {
 };
 
 export default function Hero({ data }) {
-  const stats = data?.stats || [];
-  const socialLinks = data?.socials || [];
-  const title = data?.title || "I build sharp, fast web experiences with React, Next.js, and Node.";
-  const subtitle = data?.subtitle || "Brutalist-inspired interfaces, clean architecture, and production-minded details—from auth to CI/CD.";
-  const location = data?.location || "Kathmandu, Nepal";
-  const availability = data?.availability || "Available for projects";
+  const heroContent = {
+    role: "Full Stack Developer | AI Engineer",
+
+    location: "Kathmandu, Nepal",
+
+    availability: "Open to Opportunities",
+
+    headline: "Building scalable web applications and intelligent AI-powered software.",
+
+    description:
+      "I build production-ready applications using React, Next.js, Node.js, TypeScript, and modern AI technologies, focusing on clean architecture, performance, and real-world problem solving.",
+
+    highlights: [
+      {
+        value: "1+",
+        label: "Years Experience",
+      },
+      {
+        value: "15+",
+        label: "Projects",
+      },
+      {
+        value: "AI",
+        label: "Powered Apps",
+      },
+      {
+        value: "MERN",
+        label: "Tech Stack",
+      },
+    ],
+
+    primaryCTA: {
+      label: "View Projects",
+      href: "#work",
+    },
+
+    secondaryCTA: {
+      label: "Download Resume",
+      href: "/resume.pdf",
+    },
+
+    socialLinks: [
+      {
+        label: "GitHub",
+        url: "https://github.com/Himesh-Bhattarai",
+      },
+      {
+        label: "LinkedIn",
+        url: "https://linkedin.com/in/himeshchanchal-bhattarai",
+      },
+      {
+        label: "Email",
+        url: "mailto:your@email.com",
+      },
+      {
+        label: "Phone",
+        url: "tel:+977xxxxxxxxx",
+      },
+    ],
+  };
+
   return (
     <section
       id="hero"
@@ -23,20 +79,21 @@ export default function Hero({ data }) {
       <div className="hero-grid pointer-events-none absolute inset-0" aria-hidden />
       <div className="max-w-6xl mx-auto grid gap-12 md:grid-cols-[1.1fr_0.9fr] items-center relative z-10">
         <div className="space-y-8">
-          <div className="inline-flex items-center gap-2 bg-[--chip-bg] text-[--muted] px-3 py-1 rounded-full font-mono text-xs border border-[--line]">
-            <span>Full-stack engineer</span>
-            <span className="h-1 w-1 rounded-full bg-[--accent]" />
-            <span>{location}</span>
-            <span className="h-1 w-1 rounded-full bg-[--accent]" />
-            <span>{availability}</span>
+          <div className="inline-flex flex-wrap items-center gap-x-2 gap-y-1.5 bg-[--chip-bg] text-[--muted] px-3 py-1.5 rounded-full font-mono text-xs border border-[--line] max-w-full">
+            <span className="truncate">{heroContent.role}</span>
+            <span className="hidden sm:inline-block h-1 w-1 rounded-full bg-[--accent]" />
+            <span className="truncate">{heroContent.location}</span>
+            <span className="hidden sm:inline-block h-1 w-1 rounded-full bg-[--accent]" />
+            <span className="truncate">{heroContent.availability}</span>
           </div>
 
           <div className="space-y-6">
             <h1 className="text-4xl md:text-5xl font-semibold leading-tight tracking-tight">
-              {title}
+              {heroContent.headline}
             </h1>
+
             <p className="text-lg text-[--muted] max-w-2xl">
-              {subtitle}
+              {heroContent.description}
             </p>
           </div>
 
@@ -54,9 +111,9 @@ export default function Hero({ data }) {
             </Button>
           </div>
 
-          {stats.length > 0 && (
+          {heroContent.highlights.length > 0 && (
             <div className="flex flex-wrap items-center gap-4">
-              {stats.map((stat) => (
+              {heroContent.highlights.map((stat) => (
                 <div
                   key={stat.label}
                   className="min-w-[130px] rounded-lg border border-[--line] px-4 py-3 bg-[--panel]"
@@ -69,10 +126,10 @@ export default function Hero({ data }) {
           )}
 
           <div className="flex flex-wrap items-center gap-4">
-          {(socialLinks.length ? socialLinks : []).map((social) => (
-            <a
-              key={social.label}
-              href={social.url}
+            {(heroContent.socialLinks.length ? heroContent.socialLinks : []).map((social) => (
+              <a
+                key={social.label}
+                href={social.url}
                 target="_blank"
                 rel="noreferrer"
                 className="group inline-flex items-center gap-2 text-sm font-mono text-[--muted] hover:text-[--page-fg] transition-colors"
@@ -82,6 +139,7 @@ export default function Hero({ data }) {
               </a>
             ))}
           </div>
+          
         </div>
 
         <div className="relative">
@@ -95,13 +153,17 @@ export default function Hero({ data }) {
                 </div>
               </div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-lg bg-black/40 px-3 py-2 backdrop-blur border border-[--line]">
-                <div className="text-sm font-semibold">{location || "Kathmandu • Remote"}</div>
+                <div className="text-sm font-semibold">{heroContent.location || "Kathmandu • Remote"}</div>
                 <div className="text-xs text-[--muted] font-mono">Design / Build / Ship</div>
               </div>
             </div>
           </div>
         </div>
       </div>
+          <div className="mt-12 mx-auto flex w-full justify-center">
+  <SearchBar />
+</div>
+      
     </section>
   );
 }

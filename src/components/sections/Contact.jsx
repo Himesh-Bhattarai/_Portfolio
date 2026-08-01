@@ -36,7 +36,7 @@ export default function Contact() {
       <div className="max-w-6xl mx-auto grid gap-10 md:grid-cols-[1.1fr_0.9fr] items-start">
         <div className="space-y-4">
           <p className="inline-flex w-fit items-center gap-2 rounded-full border border-[--line] bg-[--chip-bg] px-3 py-1 text-xs font-mono text-[--muted]">
-            Contact Info:)
+            Let's Connect
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">Have an idea or an opportunity? Let's talk.</h2>
           <p className="text-[--muted] max-w-xl">

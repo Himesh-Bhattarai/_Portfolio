@@ -4,6 +4,143 @@ import { Button } from '@/components/ui/button';
 
 export default function Work({ data }) {
   const list = data && Array.isArray(data) ? data : [];
+
+  const projects = [
+  {
+    title: "AI Integrated E-Commerce",
+
+    description:
+      "A full-stack AI-powered e-commerce platform featuring intelligent product search, AI chatbot, review summarization, FAQ generation, seller dashboards, authentication, and modern commerce workflows.",
+
+    image: "/projects/ai-ecommerce.png",
+
+    tags: [
+      "Next.js",
+      "TypeScript",
+      "MongoDB",
+      "Node.js",
+      "AI",
+      "RAG"
+    ],
+
+    featured: true,
+
+    link: "",
+
+    code: ""
+  },
+
+  {
+    title: "ContentFlow CMS",
+
+    description:
+      "A modern headless CMS with role-based authentication, dynamic content management, reusable APIs, media handling, and scalable architecture.",
+
+    image: "/projects/contentflow.png",
+
+    tags: [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "JWT"
+    ],
+
+    featured: true,
+
+    link: "",
+
+    code: ""
+  },
+  {
+    title: "Stroid",
+
+    description:
+      "A deterministic React state management library supporting configurable store authority, predictable hydration, and drift detection for modern React applications.",
+
+    image: "/projects/stroid.png",
+
+    tags: [
+      "React",
+      "TypeScript",
+      "Library",
+      "NPM"
+    ],
+
+    featured: true,
+
+    link: "",
+
+    code: ""
+  },
+
+  {
+    title: "Portfolio v2",
+
+    description:
+      "Personal portfolio built with React and modern UI architecture, designed to evolve into an AI-powered portfolio where an assistant can manage content through structured APIs and automation.",
+
+    image: "/projects/portfolio-v2.png",
+
+    tags: [
+      "React",
+      "Vite",
+      "Tailwind",
+      "Framer Motion"
+    ],
+
+    featured: true,
+
+    link: "",
+
+    code: ""
+  },
+
+
+  {
+    title: "Helmet Head Nepal",
+
+    description:
+      "A modern e-commerce experience for motorcycle helmets featuring responsive layouts, smooth shopping flows, and interactive product presentation.",
+
+    image: "/projects/helmet-head.png",
+
+    tags: [
+      "Next.js",
+      "Three.js",
+      "Express",
+      "Tailwind"
+    ],
+
+    featured: false,
+
+    link: "",
+
+    code: ""
+  },
+
+  {
+    title: "NP Revolution",
+
+    description:
+      "An independent Nepali news platform delivering categorized news, dynamic content, and a clean reading experience.",
+
+    image: "/projects/nprevolution.png",
+
+    tags: [
+      "Next.js",
+      "TypeScript",
+      "MongoDB"
+    ],
+
+    featured: false,
+
+    link: "",
+
+    code: ""
+  }
+
+  ]
   return (
     <section id="work" className="px-6 py-20 border-b border-[--line] bg-[--panel] text-[--page-fg]">
       <div className="max-w-6xl mx-auto space-y-10">
@@ -12,15 +149,15 @@ export default function Work({ data }) {
             Selected work
           </p>
           <div className="flex flex-col gap-2">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">Projects that carry weight.</h2>
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">Building software from idea to deployment.</h2>
             <p className="text-[--muted] max-w-2xl">
-              Real interfaces, pragmatic stacks, and production-minded details. Each built to be fast, legible, and maintainable.
+              These projects demonstrate my experience building full-stack applications, AI-powered solutions, and scalable software using modern technologies. Each reflects real-world problem solving, clean architecture, and a focus on performance and maintainability.
             </p>
           </div>
         </header>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {list.map((project) => {
+          {projects.map((project) => {
             const tags = project.tags || [];
             return (
             <Card
