@@ -1,6 +1,21 @@
+import Link from 'next/link';
 import { ExternalLink, Github, FileText, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+
+const sectionNav = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'tech-stack', label: 'Tech Stack' },
+  { id: 'features', label: 'Features' },
+  { id: 'architecture', label: 'Architecture' },
+  { id: 'folder-structure', label: 'Folder Structure' },
+  { id: 'api-docs', label: 'API' },
+  { id: 'challenges', label: 'Challenges' },
+  { id: 'performance', label: 'Performance' },
+  { id: 'future-improvements', label: 'Roadmap' },
+  { id: 'lessons-learned', label: 'Lessons' },
+  { id: 'recruiter-summary', label: 'Recruiter Summary' },
+];
 
 // Full case-study content for every project shown in Work.jsx. One file,
 // one object, keyed by slug — same pattern as experienceContent in
@@ -689,6 +704,28 @@ export default function ProjectShowcase({ slug }) {
   return (
     <article className="px-6 py-16 text-[--page-fg]">
       <div className="mx-auto max-w-4xl space-y-10">
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-mono text-[--muted]">
+          <Link href="/" className="hover:text-[--page-fg] transition-colors">Home</Link>
+          <span>/</span>
+          <Link href="/#work" className="hover:text-[--page-fg] transition-colors">Work</Link>
+          <span>/</span>
+          <span className="text-[--page-fg]">{data.title}</span>
+        </nav>
+
+        {/* Section quick-nav */}
+        <nav aria-label="Section navigation" className="flex flex-wrap gap-2 border-b border-[--line] pb-6 text-xs font-mono">
+          {sectionNav.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              className="rounded-full border border-[--line] bg-[--chip-bg] px-3 py-1 text-[--muted] transition-colors hover:border-[--accent] hover:text-[--page-fg]"
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+
         {/* 1. Hero */}
         <header className="space-y-4">
           <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">{data.title}</h1>
@@ -777,7 +814,11 @@ export default function ProjectShowcase({ slug }) {
               ))}
             </div>
           )}
-          {data.architecture?.folderStructure && <p><strong className="text-[--page-fg]">Folder structure:</strong> {data.architecture.folderStructure}</p>}
+          {data.architecture?.folderStructure && (
+            <p id="folder-structure" className="scroll-mt-24">
+              <strong className="text-[--page-fg]">Folder structure:</strong> {data.architecture.folderStructure}
+            </p>
+          )}
           {data.architecture?.appFlow && <p><strong className="text-[--page-fg]">App flow:</strong> {data.architecture.appFlow}</p>}
           {data.architecture?.authFlow && <p><strong className="text-[--page-fg]">Auth flow:</strong> {data.architecture.authFlow}</p>}
           {data.architecture?.requestLifecycle && <p><strong className="text-[--page-fg]">Request lifecycle:</strong> {data.architecture.requestLifecycle}</p>}
