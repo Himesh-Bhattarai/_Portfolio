@@ -57,4 +57,40 @@ export function publicCall(server) {
             }
         }
     );
+
+    server.registerTool(
+        "get_experience_info",{
+            title: "Experience Information",
+            description:"Gets information about Himesh's experience since 2019. Public tool - no authentication required.",
+
+            inputScheme:{
+                query: z.string().min(1, { message: "Query is required" }),
+            }
+        },
+
+        async({query})=>{
+            try{
+                await connectDB();
+
+                const information = await Info.find().select("experience")
+
+                return{
+                    content: [
+                        {
+                            type: "text",
+                            text: JSON.stringify({
+                                information: information,
+                                query
+                            })
+                        }
+                    ]
+                }
+            }catch(error){
+                return{
+                    isError: true,
+                    content: [{ type: "text", text: "Failed to fetch experience information: " + error.message }],
+                };
+            }
+        }
+    )
 }

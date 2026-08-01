@@ -8,6 +8,7 @@ import { generateToken } from "./jwt.js";
 // cookies, since only an actual HTTP response (the API route, or later
 // the /api/chat orchestrator) can set those.
 export async function verifyAdmin({ id, password }) {
+
   if (!id || !password) {
     return { success: false, isAuthenticated: false, message: "Please provide all the required fields" };
   }
