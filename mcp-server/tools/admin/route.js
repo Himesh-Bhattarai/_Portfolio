@@ -1,7 +1,32 @@
+/**
+ * mcp-server/tools/admin/route.js
+ *
+ * Privileged (admin-only) MCP tools: update_content, create_blog,
+ * delete_blog, update_blog, list_blogs — plus create_email_draft, which is
+ * public despite living in this file (see its own doc comment below).
+ *
+ * Auth model (see CLAUDE.md "Auth model: real session, never the model's
+ * word"): every tool here takes an `accessToken` argument and calls
+ * validateToken() on it FRESH, on every single call. None of them trust a
+ * prior verify_admin call in the same conversation, and none of them check
+ * a password — only auth/route.js's verify_admin does that, once, at login.
+ * app/api/chat/route.js additionally only offers these tool names to the
+ * model at all when the real request cookie is already a valid admin
+ * session (see PRIVILEGED_TOOLS there) — this file's own re-check is the
+ * second, independent layer, not the only one.
+ *
+ * Runs as a standalone Node script (`node mcp-server/index.js`), not
+ * through Next's bundler — imports here need explicit `.js` extensions and
+ * relative paths (no `@/` alias). See CLAUDE.md.
+ */
+
 import { z } from "zod";
 import connectDB from "../../../src/lib/connectDB.js";
 import Blog from "../../../src/models/Blog.js";
 import { validateToken } from "../../../src/lib/jwt.js";
+import { buildContactEmail } from "../../../src/lib/buildContactEmail.js";
+
+
 
 export function registerAdminTools(server) {
     //1.Update website content
@@ -442,6 +467,7 @@ server.registerTool(
                             text: JSON.stringify(
                                 {
                                     success: true,
+
                                     blogs: blogs,
                                 },
                                 null,
@@ -461,21 +487,70 @@ server.registerTool(
                     ],
                 };
             }
-        }    
-),
+        }
+);
 
-
+/**
+ * create_email_draft — PUBLIC tool (no accessToken, unlike everything
+ * else in this file). Lives here because it's admin-adjacent content
+ * (mail addressed to Himesh), not because it needs privilege.
+ *
+ * It never sends anything server-side. A visitor (recruiter, HR, etc.)
+ * tells the AI what they want to say; the AI calls this tool with the
+ * fields; the tool hands back a formatted draft plus a `mailtoLink` the
+ * frontend can either show as copyable text or use to redirect the
+ * visitor to their own email client, already addressed to Himesh and
+ * pre-filled. The actual send happens in the visitor's own mail client,
+ * from their own address — this app's Resend account is never touched,
+ * so there's no way for this public tool to be used to relay spam through
+ * it (unlike a naive "send on their behalf" implementation would allow).
+ */
 server.registerTool(
-    "create_email_draft",{
-        title: "create email",
-        description: "Create email template and auto send to admin. This create email template and send to admin for those people who ask for contact me. This do not required any access Token because this is public tool and anyone can use it. Spically for HR, Recruiter and other people who want to contact me.",
-        inputSchema:{
-            name: z.string().min(1, {message: "Name is required"}),
-            company: z.string().min(1, {message: "Company is required"}),
-            subject: z.string().min(1, {message : "Subject is required"}),
-            body: z.string().min(1, {message : "Body is required"}),
-            to_email : z.string().email({message : "To email is required and must be valid email address"}),
+    "create_email_draft",
+    {
+        title: "Create Email Draft",
+        description:
+            "Drafts an email addressed to Himesh from a site visitor (HR, recruiter, or anyone who wants to get in touch) and returns the draft text plus a mailto link — it does NOT send anything itself. No access token required; this is a public tool.",
+        inputSchema: {
+            name: z.string().min(1, { message: "Name is required" }),
+            company: z.string().optional(),
+            subject: z.string().min(1, { message: "Subject is required" }),
+            body: z.string().min(1, { message: "Body is required" }),
+            email: z.string().email({ message: "A valid email address is required so Himesh can reply" }),
+        },
+    },
+
+    async ({ name, company, subject, body, email }) => {
+        try {
+            const { to, subject: fullSubject, text } = buildContactEmail({
+                name,
+                email,
+                subject,
+                message: body,
+                company,
+            });
+
+            const mailtoLink = `mailto:${to}?subject=${encodeURIComponent(fullSubject)}&body=${encodeURIComponent(text)}`;
+
+            return {
+                content: [
+                    {
+                        type: "text",
+                        text: JSON.stringify({
+                            success: true,
+                            draft: { to, subject: fullSubject, body: text },
+                            mailtoLink,
+                        }),
+                    },
+                ],
+            };
+        } catch (error) {
+            return {
+                isError: true,
+                content: [{ type: "text", text: "Failed to prepare email draft: " + error.message }],
+            };
         }
     }
-)
+);
+
 }

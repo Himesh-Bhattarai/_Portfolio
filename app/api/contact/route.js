@@ -1,5 +1,8 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
+import { buildContactEmail } from "@/lib/buildContactEmail";
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request) {
   try {
@@ -17,9 +20,7 @@ export async function POST(request) {
       );
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
+    if (!EMAIL_REGEX.test(email)) {
       return NextResponse.json(
         {
           success: false,
@@ -29,23 +30,14 @@ export async function POST(request) {
       );
     }
 
+    const { to, subject: fullSubject, text } = buildContactEmail({ name, email, subject, message });
+
     const { data, error } = await resend.emails.send({
       from: "Portfolio <onboarding@resend.dev>", // change later
-      to: ["himesh.hcb@gmail.com"], // your email
+      to: [to],
       replyTo: email,
-      subject: `[Portfolio Contact] ${subject}`,
-      text: `
-New Portfolio Contact
-
-Name: ${name}
-Email: ${email}
-
-Subject:
-${subject}
-
-Message:
-${message}
-      `,
+      subject: fullSubject,
+      text,
     });
 
     if (error) {

@@ -1,3 +1,21 @@
+/**
+ * mcp-server/tools/auth/route.js
+ *
+ * Exactly one tool: verify_admin — the ONLY place a password is checked.
+ * Calls the shared verifyAdmin() from src/lib/ (also used by
+ * app/api/admin-login/route.js) so the check exists in one place. On
+ * success it returns a signed accessToken as tool output text, NOT a
+ * cookie — a bare MCP tool has no HTTP response to set one on. Only
+ * app/api/chat/route.js, a real Next.js route, can turn that token into
+ * the actual httpOnly session cookie.
+ *
+ * Every OTHER privileged tool (mcp-server/tools/admin/route.js) takes that
+ * same accessToken as an argument and re-validates it fresh on every call
+ * — verify_admin is never re-trusted, only its output token is.
+ *
+ * Standalone Node script, not bundled by Next — imports need explicit
+ * `.js` extensions; no `@/` alias here.
+ */
 import { z } from "zod";
 import { verifyAdmin } from "../../../src/lib/verifyAdmin.js";
 
