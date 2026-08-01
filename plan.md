@@ -98,3 +98,58 @@ visitor from talking the agent into "pretending" they're admin.
 3. Wrong-password attempts get rate-limited/locked after N tries.
 4. Session expiry forces re-auth (both factors again).
 5. Swapping `LLM_PROVIDER=ollama` → `anthropic` requires no code change.
+
+---
+
+# Project Showcase Pages
+
+Clicking a project card in `Work.jsx` now opens a real case-study page at
+`/projects/<slug>` instead of doing nothing.
+
+## Architecture
+
+Same convention used everywhere else in this codebase (`Hero.jsx` has
+`heroContent`, `Experience.jsx` has `experienceContent`, `Work.jsx` has
+`projects`) — one file, one inline data object, no separate content
+folder: `src/components/ProjectShowcase.jsx` holds a single
+`showcaseData` object keyed by slug, covering all 19 sections from the
+user's spec (Hero meta, Overview, Tech Stack, Features, Architecture, DB
+Design, API Docs, Auth Flow, Screenshots, Challenges, Performance,
+Security, Deployment, Future Improvements, Lessons Learned, Metrics,
+Timeline, AI Assistant, Recruiter Summary). `app/projects/[slug]/page.jsx`
+statically generates one page per slug via `generateStaticParams` and
+404s on unknown slugs.
+
+## Status
+
+### Done
+- `src/components/ProjectShowcase.jsx` — all 6 projects, all 19 sections,
+  content pulled from the projects' real GitHub repos via `gh` (not
+  placeholders): `ai-powered-ecommerce`, `Open_Source_CMS`, `stroid`,
+  `HELMETHEADS-NEPAL`, `NP_NEWS_PORTAL`, plus this repo itself for
+  `portfolio-v2`. Real facts used where available (tech stack from
+  `package.json`, commit counts/dates from `git log`, architecture from
+  actual folder structure); sections with no evidence say so plainly
+  (e.g. Helmet Head Nepal's repo has no code — 1 commit, README only —
+  and its showcase page says that directly rather than inventing depth).
+- `app/projects/[slug]/page.jsx` — static route, `notFound()` for unknown
+  slugs.
+- `Work.jsx` — each project entry got a `slug` field, cards now wrap in
+  `next/link` to `/projects/<slug>` (fixes the dead-click bug).
+- `npm run build` verified passing, 6 static project pages generated.
+
+### Known gaps (not fixed as part of this pass)
+- `Work.jsx`'s `<img src={project.image}>` still points at
+  `/projects/*.png` files that don't exist in `public/` — those 404 on
+  the live site. Real screenshots need to be added by the user; not
+  fabricated here per their explicit direction.
+- `ai-powered-ecommerce`'s own `ENDPOINT.md` documents 3 build-broken API
+  routes in that project — represented honestly in its showcase page
+  (Status/Challenges sections), not fixed here (out of scope — that's a
+  different repo).
+- AI Assistant section (#18 in the spec) is a disabled "coming soon" UI
+  shell in every project page — genuinely blocked on the `/api/chat`
+  orchestrator above, not built yet.
+- Helmet Head Nepal and NP Revolution showcase pages are intentionally
+  short/honest given their source repos are minimal (1 and 4 commits
+  respectively) — revisit if those projects get real development.
