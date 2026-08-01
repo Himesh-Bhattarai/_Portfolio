@@ -9,7 +9,7 @@ import { getProvider } from "@/lib/llm";
 // Tool names that require a real admin session before the LLM is even
 // told they exist. verify_admin is intentionally NOT in this set — it's
 // how login itself happens, so it must stay reachable while logged out.
-const PRIVILEGED_TOOLS = new Set(["create_blog", "edit_blog", "delete_blog"]);
+const PRIVILEGED_TOOLS = new Set(["create_blog", "edit_blog", "delete_blog", "update_content"]);
 
 // Connects an MCP client to our own MCP server in-process, over a real
 // MCP protocol connection (InMemoryTransport — linked in-memory streams,
