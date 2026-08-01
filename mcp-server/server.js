@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 import { registerAuthTool } from "./tools/auth/route.js";
+import { publicCall } from "./tools/public/route.js";
 
 export function createServer(){
     const server = new McpServer({
@@ -11,6 +12,7 @@ export function createServer(){
     });
 
     registerAuthTool(server);
+    publicCall(server);
 
     return server;
 }
