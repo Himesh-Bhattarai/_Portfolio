@@ -1,3 +1,7 @@
+import Link from 'next/link';
+
+const PAGE_LINKS = { Now: '/now', Uses: '/uses' };
+
 export default function Footer({ data, navLinks, socialLinks }) {
   const links = navLinks?.length ? navLinks : (data?.quickLinks || []);
   const socials = data?.socialLinks?.map((label) => ({ label, url: '#' })) || socialLinks || [];
@@ -9,7 +13,7 @@ export default function Footer({ data, navLinks, socialLinks }) {
     brandImage: "/loog-hcb.png",
     brandName: "Himeshchanchal Bhattarai",
     tagLine: "Full Stack Developer building modern web applications and AI-powered software.",
-    quickLinks: ["Home", "Work", "Experience", "About", "Resume", "Contact"],
+    quickLinks: ["Home", "Work", "Experience", "About", "Resume", "Contact", "Now", "Uses"],
     socialLinks: [
       {label: "GitHub", url: "https://github.com/your-handle"},
       {label: "LinkedIn", url: "https://www.linkedin.com/in/your-handle"},
@@ -28,21 +32,27 @@ export default function Footer({ data, navLinks, socialLinks }) {
           <p className="text-sm text-[--muted]">{footerContent.tagLine}</p>
         </div>
 
-        <div className="flex items-center gap-5 whitespace-nowrap">
-          {footerContent.quickLinks.map((label) => (
-            <button
-              key={label}
-              onClick={() => {
-                const el = document.getElementById(label.toLowerCase());
-                if (!el) return;
-                const y = el.getBoundingClientRect().top + window.pageYOffset - 72;
-                window.scrollTo({ top: y, behavior: 'smooth' });
-              }}
-              className="text-sm hover:text-[--page-fg] transition-colors"
-            >
-              {label}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center gap-5">
+          {footerContent.quickLinks.map((label) =>
+            PAGE_LINKS[label] ? (
+              <Link key={label} href={PAGE_LINKS[label]} className="text-sm hover:text-[--page-fg] transition-colors">
+                {label}
+              </Link>
+            ) : (
+              <button
+                key={label}
+                onClick={() => {
+                  const el = document.getElementById(label.toLowerCase());
+                  if (!el) return;
+                  const y = el.getBoundingClientRect().top + window.pageYOffset - 72;
+                  window.scrollTo({ top: y, behavior: 'smooth' });
+                }}
+                className="text-sm hover:text-[--page-fg] transition-colors"
+              >
+                {label}
+              </button>
+            )
+          )}
         </div>
 
         <div className="flex items-center gap-5 whitespace-nowrap">
