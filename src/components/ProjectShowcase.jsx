@@ -704,30 +704,27 @@ export default function ProjectShowcase({ slug }) {
   return (
     <article className="px-6 py-16 text-[--page-fg]">
       <div className="mx-auto max-w-4xl space-y-10">
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-mono text-[--muted]">
+        {/* Breadcrumb — Home / Work / <project> / <every section>, click any
+            crumb to jump straight there instead of scrolling */}
+        <nav
+          aria-label="Breadcrumb"
+          className="flex flex-wrap items-center gap-x-2 gap-y-1.5 border-b border-[--line] pb-6 text-xs font-mono text-[--muted]"
+        >
           <Link href="/" className="hover:text-[--page-fg] transition-colors">Home</Link>
           <span>/</span>
           <Link href="/#work" className="hover:text-[--page-fg] transition-colors">Work</Link>
           <span>/</span>
-          <span className="text-[--page-fg]">{data.title}</span>
-        </nav>
-
-        {/* Section quick-nav */}
-        <nav aria-label="Section navigation" className="flex flex-wrap gap-2 border-b border-[--line] pb-6 text-xs font-mono">
+          <a href="#top" className="text-[--page-fg] hover:text-[--accent] transition-colors">{data.title}</a>
           {sectionNav.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className="rounded-full border border-[--line] bg-[--chip-bg] px-3 py-1 text-[--muted] transition-colors hover:border-[--accent] hover:text-[--page-fg]"
-            >
-              {item.label}
-            </a>
+            <span key={item.id} className="flex items-center gap-2">
+              <span>/</span>
+              <a href={`#${item.id}`} className="hover:text-[--page-fg] transition-colors">{item.label}</a>
+            </span>
           ))}
         </nav>
 
         {/* 1. Hero */}
-        <header className="space-y-4">
+        <header id="top" className="space-y-4">
           <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">{data.title}</h1>
           <p className="max-w-2xl text-[--muted]">{data.oneLiner}</p>
           <div className="flex flex-wrap gap-4 text-sm text-[--muted]">
