@@ -17,7 +17,7 @@ const content = {
       { label: "LinkedIn", url: "https://www.linkedin.com/in/your-handle" },
       { label: "GitHub", url: "https://github.com/your-handle" },
       { label: "Twitter", url: "https://twitter.com/your-handle" },
-      { label: "Phone", url: "tel:+977000000000" },
+      { label: "Phone", url: "tel:+9779806352021" },
     ],
   },
   about: {
