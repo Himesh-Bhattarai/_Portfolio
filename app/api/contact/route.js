@@ -6,8 +6,6 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request) {
   try {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
     const { name, email, subject, message } = await request.json();
 
     if (!name || !email || !subject || !message) {
@@ -29,6 +27,18 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+
+    if (!process.env.RESEND_API_KEY) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "The contact form isn't wired up yet — email me directly at code.himesh@gmail.com in the meantime.",
+        },
+        { status: 503 }
+      );
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const { to, subject: fullSubject, text } = buildContactEmail({ name, email, subject, message });
 

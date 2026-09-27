@@ -23,6 +23,12 @@ export default function SearchBar({
 
   return (
     <div className="w-full max-w-5xl">
+      <div className="mb-2 flex justify-center">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-[--line] bg-[--chip-bg] px-3 py-1 text-[10px] font-mono uppercase tracking-wide text-[--muted]">
+          <Sparkles className="h-3 w-3 text-[--accent]" />
+          AI feature — under development
+        </span>
+      </div>
       <form onSubmit={handleSubmit}>
        <div
   className="
